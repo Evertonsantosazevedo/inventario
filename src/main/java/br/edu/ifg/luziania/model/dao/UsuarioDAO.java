@@ -4,6 +4,7 @@ import br.edu.ifg.luziania.model.entity.Usuario;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 @RequestScoped
 public class UsuarioDAO {
@@ -20,5 +21,10 @@ public class UsuarioDAO {
                 .setParameter("email", email)
                 .getResultStream().findFirst() //Retorna primeira opção encontrada ou null
                 .orElse(null);
+    }
+
+    @Transactional
+    public void cadastrar(Usuario novoUsuario){
+        entityManager.persist(novoUsuario);
     }
 }

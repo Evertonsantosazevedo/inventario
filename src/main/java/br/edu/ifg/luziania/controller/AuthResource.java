@@ -28,4 +28,6 @@ public class AuthResource {
 
         return Response.status(Response.Status.OK).entity(loginResponseDTO).build();
     }
+
+
 }
