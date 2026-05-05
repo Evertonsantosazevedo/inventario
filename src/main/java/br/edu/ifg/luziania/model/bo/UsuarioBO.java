@@ -1,6 +1,7 @@
 package br.edu.ifg.luziania.model.bo;
 
 import br.edu.ifg.luziania.model.dao.UsuarioDAO;
+import br.edu.ifg.luziania.model.dto.CadastroRequestDTO;
 import br.edu.ifg.luziania.model.dto.LoginRequestDTO;
 import br.edu.ifg.luziania.model.dto.LoginResponseDTO;
 import br.edu.ifg.luziania.model.entity.Usuario;
@@ -8,6 +9,7 @@ import io.quarkus.elytron.security.common.BcryptUtil;
 import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
 
 @RequestScoped
@@ -16,6 +18,21 @@ public class UsuarioBO {
     @Inject
     UsuarioDAO usuarioDAO;
 
+
+    public void  cadastrarUsuario(CadastroRequestDTO cadastroRequestDTO){
+        if (usuarioDAO.buscarPorEmail(cadastroRequestDTO.email()) != null){
+            throw new WebApplicationException("e-mail já cadastrado", 409);
+        }
+        Usuario usuario = new Usuario();
+        usuario.setNome(cadastroRequestDTO.nome());
+        usuario.setEmail(cadastroRequestDTO.email());
+        String senhaHash = BcryptUtil.bcryptHash(cadastroRequestDTO.senha());
+        usuario.setSenha(senhaHash);
+        usuario.setPerfil(cadastroRequestDTO.perfil());
+
+        usuarioDAO.cadastrar(usuario);
+
+    }
 
     public LoginResponseDTO realizarLogin(LoginRequestDTO loginRequestDTO) {
 
