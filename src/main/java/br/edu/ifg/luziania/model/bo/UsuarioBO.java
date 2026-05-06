@@ -4,13 +4,16 @@ import br.edu.ifg.luziania.model.dao.UsuarioDAO;
 import br.edu.ifg.luziania.model.dto.CadastroRequestDTO;
 import br.edu.ifg.luziania.model.dto.LoginRequestDTO;
 import br.edu.ifg.luziania.model.dto.LoginResponseDTO;
+import br.edu.ifg.luziania.model.dto.UsuarioListDTO;
 import br.edu.ifg.luziania.model.entity.Usuario;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
+
+
+import java.util.List;
 
 @RequestScoped
 public class UsuarioBO {
@@ -56,5 +59,9 @@ public class UsuarioBO {
 
         return new LoginResponseDTO(token, usuario.getNome(), usuario.getPerfil().name());
 
+    }
+
+    public List<UsuarioListDTO> listarTodos(){
+        return usuarioDAO.listarTodos();
     }
 }
