@@ -5,10 +5,7 @@ import br.edu.ifg.luziania.model.dto.CadastroRequestDTO;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -22,8 +19,14 @@ public class UsuarioController {
 
     @POST
     @RolesAllowed("ADMINISTRADOR")
-    public Response cadastrarUsuario(@Valid CadastroRequestDTO requestDTO){
+    public Response cadastrarUsuario(@Valid CadastroRequestDTO requestDTO) {
         usuarioBO.cadastrarUsuario(requestDTO);
         return Response.status(Response.Status.CREATED).build();
+    }
+
+    @GET
+    @RolesAllowed("ADMINISTRADOR")
+    public Response listarUsuarios() {
+        return Response.ok(usuarioBO.listarTodos()).build();
     }
 }
