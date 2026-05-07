@@ -6,11 +6,13 @@ import br.edu.ifg.luziania.model.dto.LoginRequestDTO;
 import br.edu.ifg.luziania.model.dto.LoginResponseDTO;
 import br.edu.ifg.luziania.model.dto.UsuarioListDTO;
 import br.edu.ifg.luziania.model.entity.Usuario;
+import com.sun.jdi.LongValue;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 
 import java.util.List;
@@ -22,8 +24,8 @@ public class UsuarioBO {
     UsuarioDAO usuarioDAO;
 
 
-    public void  cadastrarUsuario(CadastroRequestDTO cadastroRequestDTO){
-        if (usuarioDAO.buscarPorEmail(cadastroRequestDTO.email()) != null){
+    public void cadastrarUsuario(CadastroRequestDTO cadastroRequestDTO) {
+        if (usuarioDAO.buscarPorEmail(cadastroRequestDTO.email()) != null) {
             throw new WebApplicationException("e-mail já cadastrado", 409);
         }
         Usuario usuario = new Usuario();
@@ -54,6 +56,7 @@ public class UsuarioBO {
         String token = Jwt.issuer("https://inventario.ifg.br")
                 .upn(usuario.getEmail()) //email do usuário logado
                 .groups(usuario.getPerfil().name()) // Perfil do usuário, grupo que ele faz parte
+                .claim("id", usuario.getId()) // Recupera a Id do usuário com uma chamada rotulada
                 .expiresIn(3600) // 1 hora em segundos
                 .sign(); //Assina digitalmente e gera a string final
 
@@ -61,7 +64,28 @@ public class UsuarioBO {
 
     }
 
-    public List<UsuarioListDTO> listarTodos(){
+    public List<UsuarioListDTO> listarTodos() {
         return usuarioDAO.listarTodos();
+    }
+
+
+    @Inject
+    JsonWebToken jwt;
+
+    public void desativarUsuario(Long idParaDesativar) {
+
+        Long idUsuarioLogado = Long.valueOf(jwt.getClaim("id").toString());
+
+
+        if (idParaDesativar.equals(idUsuarioLogado)) {
+            throw new WebApplicationException("Operação não autorizada", 403);
+        }
+        Usuario usuarioAlvo = usuarioDAO.buscarPorId(idParaDesativar);
+        if (usuarioAlvo == null) {
+            throw new WebApplicationException("Usuário não encontrado", 404);
+        }
+        usuarioAlvo.setAtivo(false);
+
+        usuarioDAO.atualizar(usuarioAlvo);
     }
 }

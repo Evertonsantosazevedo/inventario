@@ -43,4 +43,22 @@ return (List<UsuarioListDTO>) entityManager.createQuery(hql).getResultList();
                 .createQuery(hql)
                 .getResultList();
     }
+
+
+    public Usuario buscarPorId(Long id){
+        //language=jpql
+        String hql = "SELECT u FROM Usuario u WHERE u.id = :id";
+        return (Usuario) entityManager
+                .createQuery(hql)
+                .setParameter("id", id)
+                .getResultStream()
+                .findFirst()
+                .orElse(null); //Caso o ID não exista
+
+    }
+
+    @Transactional
+    public void atualizar(Usuario usuario){
+       entityManager.merge(usuario);
+    }
 }
