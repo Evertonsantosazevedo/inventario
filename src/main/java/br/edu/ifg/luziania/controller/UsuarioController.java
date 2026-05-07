@@ -29,4 +29,13 @@ public class UsuarioController {
     public Response listarUsuarios() {
         return Response.ok(usuarioBO.listarTodos()).build();
     }
+
+    @Path("/{id}/desativar")
+    @PATCH
+    @RolesAllowed("ADMINISTRADOR")
+    public Response desativarUsuario(@PathParam("id") Long id){
+        usuarioBO.desativarUsuario(id);
+
+        return Response.noContent().build();
+    }
 }
