@@ -17,7 +17,7 @@ public class UsuarioDAO {
     EntityManager entityManager;
 
 
-    public Usuario buscarPorEmail(String email){
+    public Usuario buscarPorEmail(String email) {
         //language=jpql
         String hql = "SELECT u FROM Usuario u WHERE u.email = :email";
         return (Usuario) entityManager
@@ -28,15 +28,11 @@ public class UsuarioDAO {
     }
 
     @Transactional
-    public void cadastrar(Usuario novoUsuario){
+    public void cadastrar(Usuario novoUsuario) {
         entityManager.persist(novoUsuario);
     }
 
-    /*
-    String hql = "SELECT new br.edu.ifg.luziania.model.dto.UsuarioListDTO(u.nome, u.email, u.perfil) FROM Usuario u";
-return (List<UsuarioListDTO>) entityManager.createQuery(hql).getResultList();
-     */
-    public List<UsuarioListDTO> listarTodos(){
+    public List<UsuarioListDTO> listarTodos() {
         //language=jpql
         String hql = "SELECT new br.edu.ifg.luziania.model.dto.UsuarioListDTO(u.id, u.nome, u.email, u.perfil) FROM Usuario u";
         return (List<UsuarioListDTO>) entityManager
@@ -45,7 +41,7 @@ return (List<UsuarioListDTO>) entityManager.createQuery(hql).getResultList();
     }
 
 
-    public Usuario buscarPorId(Long id){
+    public Usuario buscarPorId(Long id) {
         //language=jpql
         String hql = "SELECT u FROM Usuario u WHERE u.id = :id";
         return (Usuario) entityManager
@@ -58,7 +54,7 @@ return (List<UsuarioListDTO>) entityManager.createQuery(hql).getResultList();
     }
 
     @Transactional
-    public void atualizar(Usuario usuario){
-       entityManager.merge(usuario);
+    public void atualizar(Usuario usuario) {
+        entityManager.merge(usuario);
     }
 }
