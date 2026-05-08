@@ -2,10 +2,14 @@ package br.edu.ifg.luziania.model.bo;
 
 import br.edu.ifg.luziania.model.dao.ProdutoDAO;
 import br.edu.ifg.luziania.model.dto.ProdutoCadastroRequestDTO;
+import br.edu.ifg.luziania.model.dto.ProdutoEdicaoDTO;
+import br.edu.ifg.luziania.model.dto.ProdutoListDTO;
 import br.edu.ifg.luziania.model.entity.Produto;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
+
+import java.util.List;
 
 @RequestScoped
 public class ProdutoBO {
@@ -25,6 +29,19 @@ public class ProdutoBO {
         produto.setValorVenda(requestDTO.valorVenda());
 
         produtoDAO.cadastrar(produto);
+    }
+
+    public List<ProdutoListDTO> listarTodos(){
+        return produtoDAO.listarTodos();
+    }
+
+    public void atualizarProduto(String codigo, ProdutoEdicaoDTO edicaoDTO){
+        Produto produtoAlvo = produtoDAO.buscarPorCodigo(codigo);
+        if (produtoAlvo == null){
+            throw new WebApplicationException("Produto não encontrado", 404);
+        }
+
+
     }
 
 }
