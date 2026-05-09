@@ -20,6 +20,7 @@ public class ProdutoDAO {
         String hql = "SELECT p FROM Produto p WHERE p.id = :id";
         return (Produto) entityManager
                 .createQuery(hql)
+                .setParameter("id", id)
                 .getResultStream().findFirst()
                 .orElse(null);
     }
