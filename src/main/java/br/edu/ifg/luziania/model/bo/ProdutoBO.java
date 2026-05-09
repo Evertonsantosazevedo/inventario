@@ -17,8 +17,8 @@ public class ProdutoBO {
     @Inject
     ProdutoDAO produtoDAO;
 
-    public void cadastrarProduto(ProdutoCadastroRequestDTO requestDTO){
-        if (produtoDAO.buscarPorCodigo(requestDTO.codigo()) != null){
+    public void cadastrarProduto(ProdutoCadastroRequestDTO requestDTO) {
+        if (produtoDAO.buscarPorCodigo(requestDTO.codigo()) != null) {
             throw new WebApplicationException("Produto já cadastrado", 409);
         }
         Produto produto = new Produto();
@@ -31,16 +31,22 @@ public class ProdutoBO {
         produtoDAO.cadastrar(produto);
     }
 
-    public List<ProdutoListDTO> listarTodos(){
+    public List<ProdutoListDTO> listarTodos() {
         return produtoDAO.listarTodos();
     }
 
-    public void atualizarProduto(String codigo, ProdutoEdicaoDTO edicaoDTO){
-        Produto produtoAlvo = produtoDAO.buscarPorCodigo(codigo);
+    public void atualizarProduto(Long id, ProdutoEdicaoDTO edicaoDTO){
+        Produto produtoAlvo = produtoDAO.buscarPorId(id);
+
         if (produtoAlvo == null){
             throw new WebApplicationException("Produto não encontrado", 404);
         }
+        produtoAlvo.setCodigo(edicaoDTO.codigo());
+        produtoAlvo.setNome(edicaoDTO.nome());
+        produtoAlvo.setMarca(edicaoDTO.marca());
+        produtoAlvo.setValorVenda(edicaoDTO.valorVenda());
 
+        produtoDAO.atualizar(produtoAlvo);
 
     }
 
