@@ -15,6 +15,15 @@ public class ProdutoDAO {
     @Inject
     EntityManager entityManager;
 
+    public Produto buscarPorId(Long id){
+        //language=jpql
+        String hql = "SELECT p FROM Produto p WHERE p.id = :id";
+        return (Produto) entityManager
+                .createQuery(hql)
+                .getResultStream().findFirst()
+                .orElse(null);
+    }
+
     public Produto buscarPorCodigo(String codigo){
         //language=jpql
         String hql = "SELECT p FROM Produto p where p.codigo = :codigo";
