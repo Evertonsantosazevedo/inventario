@@ -2,6 +2,7 @@ package br.edu.ifg.luziania.controller;
 
 import br.edu.ifg.luziania.model.bo.ProdutoBO;
 import br.edu.ifg.luziania.model.dto.ProdutoCadastroRequestDTO;
+import br.edu.ifg.luziania.model.dto.ProdutoEdicaoDTO;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -28,5 +29,14 @@ public class ProdutoController {
     @RolesAllowed("ADMINISTRADOR")
     public Response listarProdutos(){
         return Response.ok(produtoBO.listarTodos()).build();
+    }
+
+    @Path("/{id}")
+    @PUT
+    @RolesAllowed("ADMINISTRADOR")
+    public Response atualizarProdutos(@PathParam("id") Long id, @Valid ProdutoEdicaoDTO requestDTO){
+        produtoBO.atualizarProduto(id, requestDTO);
+
+        return Response.noContent().build();
     }
 }
