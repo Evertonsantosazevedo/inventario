@@ -1,6 +1,7 @@
 package br.edu.ifg.luziania.model.bo;
 
 import br.edu.ifg.luziania.model.dao.ProdutoDAO;
+import br.edu.ifg.luziania.model.dto.EntradaEstoqueRequestDTO;
 import br.edu.ifg.luziania.model.dto.ProdutoCadastroRequestDTO;
 import br.edu.ifg.luziania.model.dto.ProdutoEdicaoDTO;
 import br.edu.ifg.luziania.model.dto.ProdutoListDTO;
@@ -35,10 +36,10 @@ public class ProdutoBO {
         return produtoDAO.listarTodos();
     }
 
-    public void atualizarProduto(Long id, ProdutoEdicaoDTO edicaoDTO){
+    public void atualizarProduto(Long id, ProdutoEdicaoDTO edicaoDTO) {
         Produto produtoAlvo = produtoDAO.buscarPorId(id);
 
-        if (produtoAlvo == null){
+        if (produtoAlvo == null) {
             throw new WebApplicationException("Produto não encontrado", 404);
         }
         produtoAlvo.setCodigo(edicaoDTO.codigo());
@@ -50,6 +51,14 @@ public class ProdutoBO {
 
     }
 
+    public void registrarEntrada(Long id, EntradaEstoqueRequestDTO requestDTO) {
+        Produto produtoAlvo = produtoDAO.buscarPorId(id);
+        if (produtoAlvo == null) {
+            throw new WebApplicationException("Produto não encontrado", 404);
+        }
+        produtoAlvo.setQuantidade(produtoAlvo.getQuantidade() + requestDTO.quantidade());
 
+        produtoDAO.atualizar(produtoAlvo);
+    }
 
 }
