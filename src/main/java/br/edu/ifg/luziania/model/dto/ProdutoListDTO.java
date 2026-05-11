@@ -9,6 +9,5 @@ public record ProdutoListDTO(
         String marca,
         Integer quantidade,
         BigDecimal valorVenda
-
 ) {
 }
