@@ -6,14 +6,14 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "log_auditoria")
-public class AuditoriaLog {
+public class AuditoriaLogEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    private UsuarioEntity usuario;
 
     @Column(nullable = false, length = 500) // Ação realizada
     private String acao;
@@ -21,7 +21,7 @@ public class AuditoriaLog {
     @Column(nullable = false)
     private LocalDateTime dataHora;
 
-    public AuditoriaLog(){
+    public AuditoriaLogEntity(){
 
     }
 
@@ -33,11 +33,11 @@ public class AuditoriaLog {
         this.id = id;
     }
 
-    public Usuario getUsuario() {
+    public UsuarioEntity getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
     }
 

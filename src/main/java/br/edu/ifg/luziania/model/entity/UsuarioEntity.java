@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "usuarios")
-public class Usuario {
+public class UsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,7 +25,7 @@ public class Usuario {
     @Column(nullable = false)
     private boolean ativo = true;  // Todo usuário nasce ativo por padrão
 
-    public Usuario() {
+    public UsuarioEntity() {
     }
 
     public Long getId() {

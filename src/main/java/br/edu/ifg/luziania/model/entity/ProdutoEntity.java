@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "produtos")
-public class Produto {
+public class ProdutoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -72,6 +72,6 @@ public class Produto {
         this.valorVenda = valorVenda;
     }
 
-    public Produto() {
+    public ProdutoEntity() {
     }
 }

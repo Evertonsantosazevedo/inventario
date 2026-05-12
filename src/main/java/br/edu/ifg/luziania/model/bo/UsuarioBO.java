@@ -5,8 +5,7 @@ import br.edu.ifg.luziania.model.dto.CadastroRequestDTO;
 import br.edu.ifg.luziania.model.dto.LoginRequestDTO;
 import br.edu.ifg.luziania.model.dto.LoginResponseDTO;
 import br.edu.ifg.luziania.model.dto.UsuarioListDTO;
-import br.edu.ifg.luziania.model.entity.Usuario;
-import com.sun.jdi.LongValue;
+import br.edu.ifg.luziania.model.entity.UsuarioEntity;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.RequestScoped;
@@ -28,7 +27,7 @@ public class UsuarioBO {
         if (usuarioDAO.buscarPorEmail(cadastroRequestDTO.email()) != null) {
             throw new WebApplicationException("e-mail já cadastrado", 409);
         }
-        Usuario usuario = new Usuario();
+        UsuarioEntity usuario = new UsuarioEntity();
         usuario.setNome(cadastroRequestDTO.nome());
         usuario.setEmail(cadastroRequestDTO.email());
         String senhaHash = BcryptUtil.bcryptHash(cadastroRequestDTO.senha());
@@ -42,7 +41,7 @@ public class UsuarioBO {
     public LoginResponseDTO realizarLogin(LoginRequestDTO loginRequestDTO) {
 
 
-        Usuario usuario = usuarioDAO.buscarPorEmail(loginRequestDTO.email());
+        UsuarioEntity usuario = usuarioDAO.buscarPorEmail(loginRequestDTO.email());
         if (usuario == null || !usuario.isAtivo()) {
             throw new WebApplicationException("login inválido", 401);
         }
@@ -80,7 +79,7 @@ public class UsuarioBO {
         if (idParaDesativar.equals(idUsuarioLogado)) {
             throw new WebApplicationException("Operação não autorizada", 403);
         }
-        Usuario usuarioAlvo = usuarioDAO.buscarPorId(idParaDesativar);
+        UsuarioEntity usuarioAlvo = usuarioDAO.buscarPorId(idParaDesativar);
         if (usuarioAlvo == null) {
             throw new WebApplicationException("Usuário não encontrado", 404);
         }

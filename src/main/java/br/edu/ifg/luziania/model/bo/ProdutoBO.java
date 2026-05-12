@@ -5,7 +5,7 @@ import br.edu.ifg.luziania.model.dto.EntradaEstoqueRequestDTO;
 import br.edu.ifg.luziania.model.dto.ProdutoCadastroRequestDTO;
 import br.edu.ifg.luziania.model.dto.ProdutoEdicaoDTO;
 import br.edu.ifg.luziania.model.dto.ProdutoListDTO;
-import br.edu.ifg.luziania.model.entity.Produto;
+import br.edu.ifg.luziania.model.entity.ProdutoEntity;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
@@ -22,7 +22,7 @@ public class ProdutoBO {
         if (produtoDAO.buscarPorCodigo(requestDTO.codigo()) != null) {
             throw new WebApplicationException("Produto já cadastrado", 409);
         }
-        Produto produto = new Produto();
+        ProdutoEntity produto = new ProdutoEntity();
         produto.setCodigo(requestDTO.codigo());
         produto.setNome(requestDTO.nome());
         produto.setMarca(requestDTO.marca());
@@ -37,7 +37,7 @@ public class ProdutoBO {
     }
 
     public void atualizarProduto(Long id, ProdutoEdicaoDTO edicaoDTO) {
-        Produto produtoAlvo = produtoDAO.buscarPorId(id);
+        ProdutoEntity produtoAlvo = produtoDAO.buscarPorId(id);
 
         if (produtoAlvo == null) {
             throw new WebApplicationException("Produto não encontrado", 404);
@@ -52,7 +52,7 @@ public class ProdutoBO {
     }
 
     public void registrarEntrada(Long id, EntradaEstoqueRequestDTO requestDTO) {
-        Produto produtoAlvo = produtoDAO.buscarPorId(id);
+        ProdutoEntity produtoAlvo = produtoDAO.buscarPorId(id);
         if (produtoAlvo == null) {
             throw new WebApplicationException("Produto não encontrado", 404);
         }
