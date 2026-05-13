@@ -3,6 +3,7 @@ package br.edu.ifg.luziania.model.bo;
 import br.edu.ifg.luziania.model.dao.MovimentacaoDAO;
 import br.edu.ifg.luziania.model.dao.ProdutoDAO;
 import br.edu.ifg.luziania.model.dao.UsuarioDAO;
+import br.edu.ifg.luziania.model.dto.MovimentacaoListDTO;
 import br.edu.ifg.luziania.model.dto.SaidaEstoqueDTO;
 import br.edu.ifg.luziania.model.entity.MovimentacaoEntity;
 import br.edu.ifg.luziania.model.entity.ProdutoEntity;
@@ -13,6 +14,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RequestScoped
 public class MovimentacaoBO {
@@ -46,6 +48,14 @@ public class MovimentacaoBO {
         movimentacaoEntity.setTipoMovimentacao(TipoMovimentacao.SAIDA);
 
         movimentacaoDAO.salvar(movimentacaoEntity);
+    }
+
+    public List<MovimentacaoListDTO> listarTodos(Long idProduto){
+       if (idProduto == null){
+           return movimentacaoDAO.listarTodos();
+       }else {
+           return movimentacaoDAO.listarPorProduto(idProduto);
+       }
     }
 
 }

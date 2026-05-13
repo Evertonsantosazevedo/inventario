@@ -22,16 +22,32 @@ public class MovimentacaoDAO {
 
     public List<MovimentacaoListDTO> listarTodos(){
         //language=jpql
-        String hql = "SELECT new br.edu.ifg.luziania.model.dto.MovimentacaoListDTO" +
+        String hql = "SELECT new br.edu.ifg.luziania.model.dto.MovimentacaoListDTO " +
                 "(m.id, p.nome, p.marca, u.nome, m.quantidade, m.tipoMovimentacao, m.dataHora) " +
                 "FROM MovimentacaoEntity m " +
                 "JOIN m.produto p " +
-                "JOIN m.usuario u "+
+                "JOIN m.usuario u " +
                 "ORDER BY m.dataHora DESC";
 
         return (List<MovimentacaoListDTO>) entityManager
                 .createQuery(hql)
                 .getResultList();
 
+    }
+
+    public List<MovimentacaoListDTO> listarPorProduto(Long idProduto){
+        //language=jpql
+        String hql = "SELECT new br.edu.ifg.luziania.model.dto.MovimentacaoListDTO" +
+                "(m.id, p.nome, p.marca, u.nome, m.quantidade, m.tipoMovimentacao, m.dataHora) " +
+                "FROM MovimentacaoEntity m " +
+                "JOIN m.produto p " +
+                "JOIN m.usuario u "+
+                "WHERE p.id = :idProduto " +
+                "ORDER BY m.dataHora DESC";
+
+        return (List<MovimentacaoListDTO>) entityManager
+                .createQuery(hql)
+                .setParameter("idProduto", idProduto)
+                .getResultList();
     }
 }

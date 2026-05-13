@@ -27,11 +27,16 @@ public class MovimentacaoController {
     @POST
     // @Authenticated // Qualquer um com autenticação pode acessar essa rota
     @RolesAllowed({"ADMINISTRADOR", "OPERADOR"})
-    public Response saidaProdutos(@QueryParam("idProduto") Long idProduto, @Valid SaidaEstoqueDTO saidaEstoqueDTO){
+    public Response saidaProdutos(@QueryParam("idProduto") Long idProduto, @Valid SaidaEstoqueDTO saidaEstoqueDTO) {
         Long idUsuario = Long.valueOf(jwt.getClaim("id").toString());
         movimentacaoBO.registrarSaida(idProduto, idUsuario, saidaEstoqueDTO);
 
         return Response.noContent().build();
+    }
 
+    @GET
+    @RolesAllowed({"ADMINISTRADOR", "OPERADOR"})
+    public Response listarMovimentacoes(@QueryParam("idProduto") Long idProduto){
+        return Response.ok(movimentacaoBO.listarTodos(idProduto)).build();
     }
 }
