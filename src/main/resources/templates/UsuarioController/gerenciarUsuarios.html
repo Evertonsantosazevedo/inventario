@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios</title>
+    <link rel="stylesheet" href="/css/usuarios.css">
+    <script src="/js/gerenciarUsuarios.js" defer></script>
+</head>
+<body>
+<div class="container">
+    <!--Agrupar o título e botão de voltar lado a lado -->
+    <div class="header-tabela">
+        <h1>Gerenciamento de Usuários</h1>
+        <a href="/auth/dashboard" class="btn-voltar">Voltar</a>
+    </div>
+    <!-- Container responsivo para evitar que a tabela quebre em telas menores -->
+    <div class="tabela-responsivo">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>E-mail</th>
+                <th>Perfil</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody id="tabelaUsuarios">
+            <!-- Ponto de inserção das linhas do js -->
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

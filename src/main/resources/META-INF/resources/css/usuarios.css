@@ -1,0 +1,134 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #121416;
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Assim a tabela não ficar no meio exato da tela se crescer muito **/
+    padding-top: 50px;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #1e2124;
+    width: 100%;
+    max-width: 900px;
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.header-tabela {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+h1 {
+    font-size: 1.5rem;
+    color: #ffffff;
+}
+
+.btn-voltar {
+    text-decoration: none;
+    color: #8b9bb4;
+    font-size: 0.9rem;
+    padding: 8px 15px;
+    background-color: #282b30;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-voltar:hover {
+    background-color: #36393e;
+    color: #ffffff;
+}
+
+/*Estilização da tabela*/
+
+.tabela-responsivo {
+    overflow-x: auto; /* Adiciona barra de rolagem*/
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /*Remove espaço duplo entre as bordas*/
+    text-align: left;
+}
+
+/*Cabeçalho da tabela*/
+th {
+    background-color: #282b30;
+    color: #3498db; /*Destaca os títulos das colunas*/
+    padding: 15px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/*Células do corpo da tabela*/
+td {
+    padding: 15px;
+    border-bottom: 1px solid #2f3338; /*Linha divisória entre os usuários*/
+    color: #c7d1db;
+    font-size: 0.95rem;
+}
+
+/*Efeito ao passar o mouse na linha do usuário*/
+
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+    background-color: #2a2d32;
+}
+
+/*Estilo para coluna de status ativo/inativo*/
+td:nth-child(4) {
+    font-weight: 600;
+}
+
+/*Estilização para botões injetos pelo JS*/
+
+/*Estilo geral dos botões*/
+td button {
+    background-color: transparent;
+    padding: 6px 12px;
+    margin-right: 8px; /*Espaçamento entre os botões dentro da tabela*/
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/*Botão 1*/
+td button:first-child {
+    color: #3498db;
+    border: 1px solid #3498db;
+}
+
+td button:first-child:hover {
+    background-color: #3498db;
+    color: #ffffff;
+}
+
+/*Botão 2 excluir*/
+td button:last-child {
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+}
+
+td button:last-child:hover {
+    background-color: #e74c3c;
+    color: #ffffff;
+}

@@ -1,0 +1,95 @@
+/*Remove a margem padrão dos navegadores*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Seoge UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/*Fundo da página e centralização*/
+body {
+    background-color: #121416; /*cinza claro*/
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /*ocupa 100% da largura da tela*/
+}
+
+/*Container principal (Estilo card)*/
+.container {
+    background-color: #1e2124;
+    width: 100%;
+    max-width: 400px; /*Largura máxima para não estica em telas grande*/
+    padding: 40px 30px;
+    border-radius: 10px; /*bordas arredondadas*/
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); /* Sombra mais escura e difusa*/
+}
+
+/*Títulos*/
+h1 {
+    font-size: 1.6rem;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 30px;
+}
+/* Organização do formulário (Contêiner) */
+.form-login {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Cria o espaçamento automático entre o e-mail, senha e botão */
+}
+
+/* Estilo exclusivo das caixas de texto (Inputs) */
+.form-login input {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: #282b30;
+    color: #ffffff;
+    border: 1px solid #36393e;
+    border-radius: 6px;
+    outline: none; /* remove a barra padrão do navegador ao clicar */
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-login input:focus{
+    border-color: #3498db;
+}
+
+.form-login input::placeholder{
+    color: #7f8c8d;
+}
+
+.form-login a{
+    text-decoration: none;
+    color: #8b9bb4;
+    font-size: 0.85rem;
+    text-align: right;
+    margin-top: -5px;
+    transition: color 0.2s ease;
+}
+
+.form-login a:hover {
+    color: #3498db; /* Fica azul ao passar o mouse */
+}
+
+/* Botão de Entrar */
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: transparent;
+    color: #3498db; /* Azul no lugar do vermelho */
+    border: 1px solid #3498db;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #3498db;
+    color: #1e2124; /* O texto fica escuro para facilitar a leitura no fundo azul */
+}

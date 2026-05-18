@@ -2,6 +2,9 @@ package br.edu.ifg.luziania.controller;
 
 import br.edu.ifg.luziania.model.bo.UsuarioBO;
 import br.edu.ifg.luziania.model.dto.CadastroRequestDTO;
+import io.quarkus.qute.CheckedTemplate;
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -16,6 +19,18 @@ public class UsuarioController {
 
     @Inject
     UsuarioBO usuarioBO;
+
+    @CheckedTemplate
+    public static class Templates{
+        public static native TemplateInstance gerenciarUsuarios();
+    }
+
+    @GET
+    @Path("/gerenciar")
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance telaGerenciarUsuarios(){
+        return Templates.gerenciarUsuarios();
+    }
 
     @POST
     @RolesAllowed("ADMINISTRADOR")

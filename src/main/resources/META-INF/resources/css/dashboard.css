@@ -21,7 +21,7 @@ body {
     background-color: #1e2124;
     width: 100%;
     max-width: 450px; /*Largura máxima para não estica em telas grande*/
-    padding: 400px 30px;
+    padding: 40px 30px;
     border-radius: 10px; /*bordas arredondadas*/
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); /* Sombra mais escura e difusa*/
 }
