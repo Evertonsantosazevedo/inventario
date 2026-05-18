@@ -21,11 +21,9 @@ async function fazerLogin() {
         }
         const dados = await resposta.json();
         sessionStorage.setItem('token', dados.token);
-        [1]
         sessionStorage.setItem('perfil', dados.perfil);
-        [2]
 
-        window.location.href = "dashboard.html"
+        window.location.href = "/auth/dashboard"
     } catch (erro) {
         console.error("Erro ao conectar com o servidor", erro);
         alert("O servidor está fora do ar.")

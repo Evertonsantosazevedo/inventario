@@ -3,12 +3,11 @@ package br.edu.ifg.luziania.controller;
 import br.edu.ifg.luziania.model.bo.UsuarioBO;
 import br.edu.ifg.luziania.model.dto.LoginRequestDTO;
 import br.edu.ifg.luziania.model.dto.LoginResponseDTO;
+import io.quarkus.qute.CheckedTemplate;
+import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -19,6 +18,32 @@ public class AuthController {
 
     @Inject
     UsuarioBO usuarioBO;
+
+    @CheckedTemplate
+    public static class Templates{
+        // O Quarkus vai procurar automaticamente o arquivo:
+        // src/main/resources/templates/AuthController/login.html
+        public static native TemplateInstance login();
+
+        public static native TemplateInstance dashboard();
+    }
+
+
+    //Retorna ao cliente web o html com a tela de login
+    @GET
+    @Path("/login")
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance telaLogin(){
+       return Templates.login();
+    }
+
+
+    @GET
+    @Path("/dashboard")
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance telaDashboard(){
+        return Templates.dashboard();
+    }
 
     @Path("/login")
     @POST

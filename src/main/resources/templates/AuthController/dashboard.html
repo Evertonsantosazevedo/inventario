@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Inventário</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <!-- Importa o script de proteção-->
+    <script src="/js/dashboard.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>Bem vindo ao inventário!</h1>
+
+    <nav>
+        <h2>Menu principal</h2>
+        <ul>
+            <!-- Itens exclussivos do adm -->
+            <li id="menu-usuarios" style="display: none"><a href="/usuarios">Gerenciar usuários</a></li>
+            <li id="menu-catalogo" style="display: none"><a href="/produtos">Cátalogo de produtos</a></li>
+            <li id="menu-auditoria" style="display: none"><a href="/auditoria">Auditoria</a></li>
+
+            <!-- Item liberado para adm e operador -->
+            <li><a href="/movimentacoes">Movimentações de estoque</a></li>
+        </ul>
+    </nav>
+    <br>
+    <button type="button" onclick="fazerLogout()">Sair</button>
+</div>
+</body>
+</html>

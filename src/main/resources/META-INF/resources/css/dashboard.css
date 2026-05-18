@@ -1,0 +1,92 @@
+/*Remove a margem padrão dos navegadores*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Seoge UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/*Fundo da página e centralização*/
+body {
+    background-color: #121416; /*cinza claro*/
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /*ocupa 100% da largura da tela*/
+}
+
+/*Container principal (Estilo card)*/
+.container {
+    background-color: #1e2124;
+    width: 100%;
+    max-width: 450px; /*Largura máxima para não estica em telas grande*/
+    padding: 400px 30px;
+    border-radius: 10px; /*bordas arredondadas*/
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); /* Sombra mais escura e difusa*/
+}
+
+/*Títulos*/
+h1 {
+    font-size: 1.6rem;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h2 {
+    font-size: 0.9rem;
+    color: #8b9bb4;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #2f3338;
+    padding-bottom: 5px;
+}
+
+/*Menu e links*/
+nav ul {
+    list-style-type: none; /*Tira as bolinhas da lista*/
+}
+
+nav li {
+    margin-bottom: 10px;
+}
+
+nav a {
+    display: block; /*Faz o link ocupar a linha toda, virando botão*/
+    text-decoration: none; /*Tira o sublinhado*/
+    color: #c7d1db;
+    background-color: #282b30;
+    padding: 12px 15px;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out; /*Animação suave ao passar o mouse*/
+    border-left: 4px solid transparent; /*Preparação para o efeito do hover*/
+}
+
+/*Efeito ao passar o mouse nos links*/
+nav a:hover {
+    background-color: #36393e;
+    border-left: 4px solid #3498db; /*barra azul a esquerda*/
+    color: #ffffff;
+}
+
+/*Botão de sair*/
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 25px;
+    background-color: transparent;
+    color: #ff6b6b;
+    border: 1px solid #ff6b6b;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover{
+    background-color: #ff6b6b;
+    color: #1e2124;
+}
