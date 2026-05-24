@@ -132,3 +132,87 @@ td button:last-child:hover {
     background-color: #e74c3c;
     color: #ffffff;
 }
+
+/*formulário de cadastro*/
+.formulario-cadastro{
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid #2f3338;
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+}
+
+/*Título da seção*/
+.formulario-cadastro h2{
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin-top: 20px;
+}
+
+/*Estilo das etiquetas*/
+.formulario-cadastro label{
+    color: #c7d1db;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    margin-top: 12px;
+    font-weight: 500;
+}
+/*remove marge superior da primeira etiqueta para alinhar melhor*/
+.formulario-cadastro label:first-of-type{
+    margin-top: 0;
+}
+
+/* Caixa de texto e caixa de seleção*/
+.formulario-cadastro input,
+.formulario-cadastro select{
+    width: 100%;
+    padding: 12px 15px;
+    background-color: #282b30;
+    color: #ffffff;
+    border: 1px solid #36393e;
+    border-radius: 6px;
+    outline: none;
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease;
+}
+
+/*Efeito ao clicar para digitar/selecionar*/
+.formulario-cadastro input:focus,
+.formulario-cadastro select:focus{
+    border-color: #3498db;
+}
+
+/*Cor do texto do placeholder*/
+.formulario-cadastro input::placeholder{
+    color: #7f8c8d;
+}
+
+/*Ajuste específico para a tag select*/
+.formulario-cadastro select{
+    cursor: pointer;
+}
+
+.formulario-cadastro select option{
+    background-color: #282b30;
+    color: #ffffff;
+}
+
+.formulario-cadastro button{
+    width: 100%;
+    padding: 12px;
+    margin-top: 25px;
+    background-color: transparent;
+    color: #3498db;
+    border: 1px solid #3498db;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.formulario-cadastro button:hover {
+    background-color: #3498db;
+    color: #1e2124; /* Texto escuro para contrastar quando o fundo ficar azul */
+}

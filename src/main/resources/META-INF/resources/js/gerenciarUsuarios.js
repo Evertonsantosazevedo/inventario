@@ -75,6 +75,7 @@ function atualizarTabela(usuarios) {
         //Monta a linha <tr> concatenando as células <td> com os dados do usuário
         let linha = "<tr>" +
             "<td>" + u.id + "</td>" +
+            "<td>" + u.nome + "</td>" +
             "<td>" + u.email + "</td>" +
             "<td>" + formatarPerfil(u.perfil) + "</td>" +
             "<td>" + formatarStatus(u.ativo) + "</td>" +
@@ -86,4 +87,67 @@ function atualizarTabela(usuarios) {
 
         tabela.innerHTML += linha;
     }
+}
+
+//Função de cadastro de usuário
+function salvarUsuario() {
+    //Captura os dados digitados no formulário
+    let nomeDigitado = document.getElementById("nomeNovo").value;
+    let emailDigitado = document.getElementById("emailNovo").value
+    let senhaDigitada = document.getElementById("senhaNova").value
+    let perfilSelecionado = document.getElementById("perfilNovo").value
+
+    // Validação simples para não enviar dados vazios
+    if (nomeDigitado === "" || emailDigitado === "" || senhaDigitada === "") {
+        alert("Por favor, preencha todos os campos.")
+        return
+    }
+    if (senhaDigitada.length < 8) {
+        alert("A senha deve ter no mínimo 8 caracteres.")
+        return
+    }
+
+    // Monta o DTO que será enviado no corpo da requisição
+    let novoUsuario = {
+        nome: nomeDigitado,
+        email: emailDigitado,
+        senha: senhaDigitada,
+        perfil: perfilSelecionado
+    }
+
+    const token = sessionStorage.getItem('token')
+    let url = "http://localhost:8080/usuarios"
+
+    // Faz o fetch passando o token no cabeçalho e os dados no body
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify(novoUsuario)
+    })
+        .then(function (response) {
+            // trata as resposta com base nos códigos https devolvidos
+            if (response.status === 201){
+                alert("Usuário cadastrado com sucesso")
+
+                //Limpa os campos do formulário
+                document.getElementById("nomeNovo").value = ""
+                document.getElementById("emailNovo").value = ""
+                document.getElementById("senhaNova").value = ""
+
+                //Chama listarUsuarios() para atualizar a tabela automaticamente
+                listaUsuarios()
+            }else if (response.status === 409){
+                alert("Erro: Este e-mail já está cadastrado.")
+            }else if (response.status === 400){
+                alert("Erro: Dados inválidos. Verifique os campos")
+            }else {
+                throw new Error("Erro no servidor ao tentar salvar.")
+            }
+        })
+        .catch(function (erro){
+            console.error("Erro ao salvar usuário: ", erro)
+        })
 }

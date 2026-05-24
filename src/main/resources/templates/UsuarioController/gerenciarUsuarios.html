@@ -19,6 +19,7 @@
             <thead>
             <tr>
                 <th>ID</th>
+                <th>Nome</th>
                 <th>E-mail</th>
                 <th>Perfil</th>
                 <th>Status</th>
@@ -30,6 +31,29 @@
             </tbody>
         </table>
     </div>
+    <!-- Formulário de cadastro -->
+    <div class="formulario-cadastro">
+        <h2>Cadastrar Novo Usuário</h2>
+
+        <label for="nomeNovo">Nome:</label>
+        <input type="text" id="nomeNovo" placeholder="Digite o nome completo">
+
+        <label for="emailNovo">E-mail:</label>
+        <input type="email" id="emailNovo" placeholder="Digite o e-mail">
+
+        <label for="senhaNova">Senha:</label>
+        <input type="password" id="senhaNova" placeholder="Digite a senha">
+
+        <label for="perfilNovo">Perfil:</label>
+        <select id="perfilNovo">
+            <!-- Opções de acordo com o ENUM -->
+            <option value="ADMINISTRADOR">Administrador</option>
+            <option value="Operador">Operador</option>
+        </select>
+
+        <button type="button" onclick="salvarUsuario()">Salvar Usuário</button>
+    </div>
+
 </div>
 </body>
 </html>
