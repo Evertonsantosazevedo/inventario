@@ -33,7 +33,7 @@ public class UsuarioDAO {
 
     public List<UsuarioListDTO> listarTodos() {
         //language=jpql
-        String hql = "SELECT new br.edu.ifg.luziania.model.dto.UsuarioListDTO(u.id, u.nome, u.email, u.perfil) FROM UsuarioEntity u";
+        String hql = "SELECT new br.edu.ifg.luziania.model.dto.UsuarioListDTO(u.id, u.nome, u.email, u.perfil, u.ativo) FROM UsuarioEntity u";
         return (List<UsuarioListDTO>) entityManager
                 .createQuery(hql)
                 .getResultList();

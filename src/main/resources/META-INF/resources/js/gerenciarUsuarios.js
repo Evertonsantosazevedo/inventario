@@ -129,7 +129,7 @@ function salvarUsuario() {
     })
         .then(function (response) {
             // trata as resposta com base nos códigos https devolvidos
-            if (response.status === 201){
+            if (response.status === 201) {
                 alert("Usuário cadastrado com sucesso")
 
                 //Limpa os campos do formulário
@@ -139,15 +139,53 @@ function salvarUsuario() {
 
                 //Chama listarUsuarios() para atualizar a tabela automaticamente
                 listaUsuarios()
-            }else if (response.status === 409){
+            } else if (response.status === 409) {
                 alert("Erro: Este e-mail já está cadastrado.")
-            }else if (response.status === 400){
+            } else if (response.status === 400) {
                 alert("Erro: Dados inválidos. Verifique os campos")
-            }else {
+            } else {
                 throw new Error("Erro no servidor ao tentar salvar.")
             }
         })
-        .catch(function (erro){
+        .catch(function (erro) {
             console.error("Erro ao salvar usuário: ", erro)
+        })
+}
+
+function desativarUsuario(id) {
+    // confirmação de segurança para o caso de click acidentais
+    const confirmacao = confirm("Tem certeza que deseja desativar esse usuário?")
+    if (!confirmacao) {
+        return // interrompe a operação se o usuário cancelar
+    }
+
+    const token = sessionStorage.getItem('token')
+    let url = `http://localhost:8080/usuarios/${id}/desativar`
+
+    fetch(url, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        }
+    })
+        .then(function (response) {
+                if (response.status === 204) {
+                    console.log(`Usuário ${id} desativado com sucesso.`)
+                    listaUsuarios()
+                } else if (response.status === 401) {
+                    alert("Sua sessão expirou. Faça login novamente.");
+                    window.location.href = "/auth/login"
+                } else if (response.status === 403) {
+                    alert("Ação negada: Você não tem permissão ou não pode desativar a si mesmo.")
+                } else if (response.status === 404) {
+                    alert("Erro: O usuário não foi encontrado no sistema.")
+                } else {
+                    throw new Error("Erro no servidor ao tentar salvar.")
+                }
+            }
+        )
+        .catch(function (erro) {
+            console.error("Erro ao desativar usuário: ", erro)
         })
 }

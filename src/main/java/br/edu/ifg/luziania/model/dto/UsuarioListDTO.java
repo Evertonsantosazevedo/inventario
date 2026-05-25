@@ -6,6 +6,7 @@ public record UsuarioListDTO(
         Long id,
         String nome,
         String email,
-        Perfil perfil
+        Perfil perfil,
+        Boolean ativo
 ) {}
 
