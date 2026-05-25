@@ -1,10 +1,7 @@
 package br.edu.ifg.luziania.model.bo;
 
 import br.edu.ifg.luziania.model.dao.UsuarioDAO;
-import br.edu.ifg.luziania.model.dto.CadastroRequestDTO;
-import br.edu.ifg.luziania.model.dto.LoginRequestDTO;
-import br.edu.ifg.luziania.model.dto.LoginResponseDTO;
-import br.edu.ifg.luziania.model.dto.UsuarioListDTO;
+import br.edu.ifg.luziania.model.dto.*;
 import br.edu.ifg.luziania.model.entity.UsuarioEntity;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.smallrye.jwt.build.Jwt;
@@ -86,5 +83,26 @@ public class UsuarioBO {
         usuarioAlvo.setAtivo(false);
 
         usuarioDAO.atualizar(usuarioAlvo);
+    }
+
+
+    public void editarUsuario(Long id, UsuarioEdicaoDTO edicaoDTO) {
+
+        UsuarioEntity usuario = usuarioDAO.buscarPorId(id);
+        if (usuario == null){
+            throw new WebApplicationException("Usuário não encontrado", 404);
+        }
+
+        // Verifica se o novo e-mail já existe e se não é do próprio usuário
+        UsuarioEntity usuarioComMesmoEmail = usuarioDAO.buscarPorEmail(edicaoDTO.email());
+        if (usuarioComMesmoEmail != null && !usuarioComMesmoEmail.getId().equals(id)) {
+            throw new WebApplicationException("Este e-mail já pertence a outro usuário", 409);
+        }
+
+        usuario.setNome(edicaoDTO.nome());
+        usuario.setEmail(edicaoDTO.email());
+        usuario.setPerfil(edicaoDTO.perfil());
+
+        usuarioDAO.atualizar(usuario);
     }
 }

@@ -2,6 +2,7 @@ package br.edu.ifg.luziania.controller;
 
 import br.edu.ifg.luziania.model.bo.UsuarioBO;
 import br.edu.ifg.luziania.model.dto.CadastroRequestDTO;
+import br.edu.ifg.luziania.model.dto.UsuarioEdicaoDTO;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
@@ -52,5 +53,15 @@ public class UsuarioController {
         usuarioBO.desativarUsuario(id);
 
         return Response.noContent().build();
+    }
+
+    @Path("/{id}")
+    @PUT
+    @RolesAllowed("ADMINISTRADOR")
+    public Response editarUsuario(@PathParam("id") Long id, @Valid UsuarioEdicaoDTO edicaoDTO){
+        usuarioBO.editarUsuario(id, edicaoDTO);
+
+        // Retorna 200 OK informando que a atualização foi feita com sucesso
+        return Response.ok().build();
     }
 }

@@ -12,6 +12,11 @@ public class UsuarioEntity {
     @Column(nullable = false)
     private String nome;
 
+    /*@Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+            + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
+            + "(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9]"
+            + "(?:[a-z0-9-]*[a-z0-9])?",
+            message = "{invalid.email}")*/
     @Column(nullable = false)
     private String email;
 
