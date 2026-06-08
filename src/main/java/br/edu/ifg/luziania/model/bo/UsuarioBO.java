@@ -35,8 +35,7 @@ public class UsuarioBO {
 
     }
 
-    public LoginResponseDTO realizarLogin(LoginRequestDTO loginRequestDTO) {
-
+    public AuthResultadoDTO realizarLogin(LoginRequestDTO loginRequestDTO) {
 
         UsuarioEntity usuario = usuarioDAO.buscarPorEmail(loginRequestDTO.email());
         if (usuario == null || !usuario.isAtivo()) {
@@ -56,7 +55,7 @@ public class UsuarioBO {
                 .expiresIn(3600) // 1 hora em segundos
                 .sign(); //Assina digitalmente e gera a string final
 
-        return new LoginResponseDTO(token, usuario.getNome(), usuario.getPerfil().name());
+        return new AuthResultadoDTO(token, usuario.getNome(), usuario.getPerfil().name());
 
     }
 
@@ -89,7 +88,7 @@ public class UsuarioBO {
     public void editarUsuario(Long id, UsuarioEdicaoDTO edicaoDTO) {
 
         UsuarioEntity usuario = usuarioDAO.buscarPorId(id);
-        if (usuario == null){
+        if (usuario == null) {
             throw new WebApplicationException("Usuário não encontrado", 404);
         }
 
