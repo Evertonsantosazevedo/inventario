@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Movimentações</title>
+    <link rel="stylesheet" href="/css/usuarios.css">
+    <script src="/js/movimentacoes.js" defer></script>
+</head>
+<body>
+<div class="container">
+    <div class="header-tabela">
+        <h1>Histórico de Movimentações</h1>
+        <a href="/auth/dashboard" class="btn-voltar">Voltar</a>
+    </div>
+
+    <div class="tabela-responsivo">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Produto</th>
+                <th>Usuário</th>
+                <th>Qtd</th>
+                <th>Tipo</th>
+                <th>Data/Hora</th>
+            </tr>
+            </thead>
+            <tbody id="tabelaMovimentacoes">
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Formulário de Saída (Simplificado) -->
+    <div class="formulario-cadastro" id="secaoSaida">
+        <h2>Registrar Saída</h2>
+        <label for="produtoSaida">ID do Produto:</label>
+        <input type="number" id="produtoSaida">
+        
+        <label for="qtdSaida">Quantidade:</label>
+        <input type="number" id="qtdSaida">
+        
+        <button type="button" onclick="registrarSaida()">Confirmar Saída</button>
+    </div>
+
+</div>
+</body>
+</html>

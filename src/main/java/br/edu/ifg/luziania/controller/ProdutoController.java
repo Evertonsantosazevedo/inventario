@@ -4,6 +4,8 @@ import br.edu.ifg.luziania.model.bo.ProdutoBO;
 import br.edu.ifg.luziania.model.dto.EntradaEstoqueRequestDTO;
 import br.edu.ifg.luziania.model.dto.ProdutoCadastroRequestDTO;
 import br.edu.ifg.luziania.model.dto.ProdutoEdicaoDTO;
+import io.quarkus.qute.CheckedTemplate;
+import io.quarkus.qute.TemplateInstance;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -18,6 +20,19 @@ public class ProdutoController {
 
     @Inject
     ProdutoBO produtoBO;
+
+    @CheckedTemplate
+    public static class Templates {
+        public static native TemplateInstance produtos();
+    }
+
+    @GET
+    @Path("/gerenciar")
+    @Produces(MediaType.TEXT_HTML)
+    @RolesAllowed("ADMINISTRADOR")
+    public TemplateInstance telaProdutos() {
+        return Templates.produtos();
+    }
 
     @POST
     @RolesAllowed("ADMINISTRADOR")
@@ -43,9 +58,19 @@ public class ProdutoController {
 
     @Path("/{id}/entrada")
     @POST
+
     @RolesAllowed("ADMINISTRADOR")
     public Response entradaEstoque(@PathParam("id") Long id, @Valid EntradaEstoqueRequestDTO requestDTO) {
         produtoBO.registrarEntrada(id, requestDTO);
+
+        return Response.noContent().build();
+    }
+
+    @Path("/{id}")
+    @DELETE
+    @RolesAllowed("ADMINISTRADOR")
+    public Response deletarProduto(@PathParam("id") Long id) {
+        produtoBO.deletarProduto(id);
 
         return Response.noContent().build();
     }

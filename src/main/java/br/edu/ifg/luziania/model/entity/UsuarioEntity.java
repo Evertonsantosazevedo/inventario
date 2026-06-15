@@ -1,6 +1,7 @@
 package br.edu.ifg.luziania.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 
 @Entity
 @Table(name = "usuarios")
@@ -12,12 +13,8 @@ public class UsuarioEntity {
     @Column(nullable = false)
     private String nome;
 
-    /*@Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
-            + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
-            + "(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9]"
-            + "(?:[a-z0-9-]*[a-z0-9])?",
-            message = "{invalid.email}")*/
-    @Column(nullable = false)
+    @Email
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -81,4 +78,3 @@ public class UsuarioEntity {
         this.ativo = ativo;
     }
 }
-

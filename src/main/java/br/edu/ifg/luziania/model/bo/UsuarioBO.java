@@ -84,6 +84,15 @@ public class UsuarioBO {
         usuarioDAO.atualizar(usuarioAlvo);
     }
 
+    public void ativarUsuario(Long idParaAtivar) {
+        UsuarioEntity usuarioAlvo = usuarioDAO.buscarPorId(idParaAtivar);
+        if (usuarioAlvo == null) {
+            throw new WebApplicationException("Usuário não encontrado", 404);
+        }
+        usuarioAlvo.setAtivo(true);
+        usuarioDAO.atualizar(usuarioAlvo);
+    }
+
 
     public void editarUsuario(Long id, UsuarioEdicaoDTO edicaoDTO) {
 
@@ -101,6 +110,11 @@ public class UsuarioBO {
         usuario.setNome(edicaoDTO.nome());
         usuario.setEmail(edicaoDTO.email());
         usuario.setPerfil(edicaoDTO.perfil());
+
+        // Atualiza a senha se for fornecida
+        if (edicaoDTO.senha() != null && !edicaoDTO.senha().isBlank()) {
+            usuario.setSenha(BcryptUtil.bcryptHash(edicaoDTO.senha()));
+        }
 
         usuarioDAO.atualizar(usuario);
     }

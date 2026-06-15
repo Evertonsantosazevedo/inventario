@@ -1,22 +1,22 @@
 function listaUsuarios() {
-    // Procurar o token de acesso da secção
-    const token = sessionStorage.getItem('token');
     let url = "http://localhost:8080/usuarios";
 
-    // faz o fetch passando o token no cabeçalho
+    // faz o fetch sem passar o token manualmente (o navegador envia o cookie automaticamente)
     fetch(url, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + token
+                "Content-Type": "application/json"
             }
         }
     )
         .then(function (response) {
             if (response.status === 200) {
                 return response.json()
+            } else if (response.status === 401 || response.status === 403) {
+                alert("Sessão expirada ou acesso negado.")
+                window.location.href = "/auth/login"
             } else {
-                throw new Error("Sessão expirada ou erro no servidor")
+                throw new Error("Erro no servidor")
             }
         })
         .then(function (listaUsuarios) {
@@ -29,11 +29,11 @@ function listaUsuarios() {
 }
 
 window.onload = function () {
-    // Procurar o token de acesso da secção
-    const token = sessionStorage.getItem('token');
+    // Procurar o perfil no sessionStorage (definido no login)
+    const perfil = sessionStorage.getItem('perfil');
 
-    // Se o token for nulo indica que o usuário tentou pular a tela de login
-    if (token == null) {
+    // Se o perfil for nulo indica que o usuário tentou pular a tela de login
+    if (perfil == null) {
         alert("Acesso negado");
 
         //Redireciona o usuário para tela de login
@@ -115,15 +115,12 @@ function salvarUsuario() {
         perfil: perfilSelecionado
     }
 
-    const token = sessionStorage.getItem('token')
     let url = "http://localhost:8080/usuarios"
 
-    // Faz o fetch passando o token no cabeçalho e os dados no body
     fetch(url, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(novoUsuario)
     })
@@ -159,14 +156,12 @@ function desativarUsuario(id) {
         return // interrompe a operação se o usuário cancelar
     }
 
-    const token = sessionStorage.getItem('token')
     let url = `http://localhost:8080/usuarios/${id}/desativar`
 
     fetch(url, {
         method: "PATCH",
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
+            "Content-Type": "application/json"
         }
     })
         .then(function (response) {

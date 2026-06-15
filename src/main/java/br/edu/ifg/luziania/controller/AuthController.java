@@ -6,6 +6,8 @@ import br.edu.ifg.luziania.model.dto.LoginRequestDTO;
 import br.edu.ifg.luziania.model.dto.LoginResponseDTO;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -14,8 +16,6 @@ import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
 
 @Path("/auth")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
 public class AuthController {
 
     @Inject
@@ -28,12 +28,15 @@ public class AuthController {
         public static native TemplateInstance login();
 
         public static native TemplateInstance dashboard();
+
+        public static native TemplateInstance auditoria();
     }
 
 
     //Retorna ao cliente web o html com a tela de login
     @GET
     @Path("/login")
+    @PermitAll
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance telaLogin() {
         return Templates.login();
@@ -42,13 +45,25 @@ public class AuthController {
 
     @GET
     @Path("/dashboard")
+    @PermitAll
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance telaDashboard() {
         return Templates.dashboard();
     }
 
+    @GET
+    @Path("/auditoria")
+    @RolesAllowed("ADMINISTRADOR")
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance telaAuditoria() {
+        return Templates.auditoria();
+    }
+
     @Path("/login")
     @POST
+    @PermitAll
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response login(@Valid LoginRequestDTO loginRequestDTO) {
 
         AuthResultadoDTO authResultado = usuarioBO.realizarLogin(loginRequestDTO);
@@ -58,7 +73,7 @@ public class AuthController {
                 .value(authResultado.token())
                 .path("/") // Válido para toda aplicação
                 .httpOnly(true)  //Impede acesso via java script
-                .secure(true) //HTTPS
+                .secure(false) // Desabilitado para testes locais (HTTP)
                 .sameSite(NewCookie.SameSite.STRICT)
                 .maxAge(3600)
                 .build();
@@ -75,6 +90,22 @@ public class AuthController {
                 .cookie(jwtCookie)
                 .build();
 
+    }
+
+    @Path("/logout")
+    @POST
+    @PermitAll
+    public Response logout(){
+        NewCookie limpaCookie = new NewCookie.Builder("jwt")
+                .value("")
+                .path("/")
+                .maxAge(0) // Expira imediatamente
+                .httpOnly(true)
+                .build();
+
+        return Response.noContent()
+                .cookie(limpaCookie)
+                .build();
     }
 
 
