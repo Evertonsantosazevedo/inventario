@@ -29,7 +29,7 @@ public class ProdutoController {
     @GET
     @Path("/gerenciar")
     @Produces(MediaType.TEXT_HTML)
-    @RolesAllowed("ADMINISTRADOR")
+    @RolesAllowed({"ADMINISTRADOR", "OPERADOR"})
     public TemplateInstance telaProdutos() {
         return Templates.produtos();
     }
@@ -42,7 +42,7 @@ public class ProdutoController {
     }
 
     @GET
-    @RolesAllowed("ADMINISTRADOR")
+    @RolesAllowed({"ADMINISTRADOR", "OPERADOR"})
     public Response listarProdutos() {
         return Response.ok(produtoBO.listarTodos()).build();
     }
@@ -58,8 +58,7 @@ public class ProdutoController {
 
     @Path("/{id}/entrada")
     @POST
-
-    @RolesAllowed("ADMINISTRADOR")
+    @RolesAllowed({"ADMINISTRADOR", "OPERADOR"})
     public Response entradaEstoque(@PathParam("id") Long id, @Valid EntradaEstoqueRequestDTO requestDTO) {
         produtoBO.registrarEntrada(id, requestDTO);
 
@@ -75,3 +74,4 @@ public class ProdutoController {
         return Response.noContent().build();
     }
 }
+

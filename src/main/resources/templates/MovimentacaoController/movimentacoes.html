@@ -10,6 +10,7 @@
 <div class="container">
     <div class="header-tabela">
         <h1>Histórico de Movimentações</h1>
+        <button class="btn-novo" onclick="abrirModalMovimentacao()">Nova Movimentação</button>
         <a href="/auth/dashboard" class="btn-voltar">Voltar</a>
     </div>
 
@@ -17,12 +18,12 @@
         <table>
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Produto</th>
-                <th>Usuário</th>
-                <th>Qtd</th>
-                <th>Tipo</th>
-                <th>Data/Hora</th>
+                <th data-column="id">ID</th>
+                <th data-column="nomeProduto">Produto</th>
+                <th data-column="nomeUsuario">Usuário</th>
+                <th data-column="quantidade">Qtd</th>
+                <th data-column="tipoMovimentacao">Tipo</th>
+                <th data-column="dataHora">Data/Hora</th>
             </tr>
             </thead>
             <tbody id="tabelaMovimentacoes">
@@ -30,17 +31,42 @@
         </table>
     </div>
 
-    <!-- Formulário de Saída (Simplificado) -->
-    <div class="formulario-cadastro" id="secaoSaida">
-        <h2>Registrar Saída</h2>
-        <label for="produtoSaida">ID do Produto:</label>
-        <input type="number" id="produtoSaida">
-        
-        <label for="qtdSaida">Quantidade:</label>
-        <input type="number" id="qtdSaida">
-        
-        <button type="button" onclick="registrarSaida()">Confirmar Saída</button>
+    <!-- Controles de Paginação -->
+    <div class="paginacao">
+        <button id="btnAnterior" onclick="mudarPagina(-1)">Anterior</button>
+        <span id="infoPagina">Página 1 de 1</span>
+        <button id="btnProximo" onclick="mudarPagina(1)">Próximo</button>
     </div>
+
+</div>
+
+<!-- Modal de Nova Movimentação -->
+<div id="modalMovimentacao" class="modal-overlay">
+    <div class="modal-content">
+        <button class="btn-fechar-modal" onclick="fecharModais()">&times;</button>
+        <div class="formulario-cadastro">
+            <h2 id="tituloModal">Registrar Movimentação</h2>
+
+            <label for="tipoMov">Tipo de Movimentação:</label>
+            <select id="tipoMov" onchange="ajustarModalPorTipo()">
+                <option value="SAIDA">🔴 Saída de Estoque</option>
+                <option value="ENTRADA" id="optEntrada">🟢 Entrada de Estoque</option>
+            </select>
+
+            <label for="produtoSelect">Produto:</label>
+            <select id="produtoSelect">
+                <option value="">Selecione um produto...</option>
+                <!-- Preenchido via JS -->
+            </select>
+
+            <label for="qtdMov">Quantidade:</label>
+            <input type="number" id="qtdMov" min="1" value="1">
+
+            <button type="button" id="btnConfirmarMov" onclick="confirmarMovimentacao()">Confirmar Movimentação</button>
+            <button type="button" onclick="fecharModais()" style="background-color: transparent; color: #e74c3c; border-color: #e74c3c; margin-top: 10px;">Cancelar</button>
+        </div>
+    </div>
+</div>
 
 </div>
 </body>

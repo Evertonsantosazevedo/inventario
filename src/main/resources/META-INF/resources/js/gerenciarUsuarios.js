@@ -1,12 +1,16 @@
+// Variáveis globais para controle de paginação, dados e ordenação
+let usuariosFull = [];
+let currentPage = 1;
+const itemsPerPage = 6;
+let sortColumn = 'id';
+let sortDirection = 'asc';
+
 function listaUsuarios() {
     let url = "http://localhost:8080/usuarios";
 
-    // faz o fetch sem passar o token manualmente (o navegador envia o cookie automaticamente)
     fetch(url, {
             method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
+            headers: { "Content-Type": "application/json" }
         }
     )
         .then(function (response) {
@@ -19,9 +23,10 @@ function listaUsuarios() {
                 throw new Error("Erro no servidor")
             }
         })
-        .then(function (listaUsuarios) {
-            //chama a função para desenhar a tabela
-            atualizarTabela(listaUsuarios)
+        .then(function (lista) {
+            usuariosFull = lista;
+            ordenarDados(sortColumn, false); // Ordena mantendo a direção atual
+            atualizarTabela();
         })
         .catch(function (erro) {
             console.error("Erro ao listar: ", erro)
@@ -29,158 +34,254 @@ function listaUsuarios() {
 }
 
 window.onload = function () {
-    // Procurar o perfil no sessionStorage (definido no login)
     const perfil = sessionStorage.getItem('perfil');
-
-    // Se o perfil for nulo indica que o usuário tentou pular a tela de login
     if (perfil == null) {
         alert("Acesso negado");
-
-        //Redireciona o usuário para tela de login
         window.location.href = "/auth/login"
-
-        //encerra a execução
         return;
     }
+
+    // Configura os ouvintes de clique nos cabeçalhos para ordenação
+    const headers = document.querySelectorAll("th[data-column]");
+    headers.forEach(header => {
+        header.addEventListener("click", () => {
+            ordenarDados(header.getAttribute("data-column"), true);
+            atualizarTabela();
+        });
+    });
 
     listaUsuarios()
 }
 
-// Funções de formatação
-//transforma o true e false do status em texto legível
-function formatarStatus(ativo) {
-    if (ativo === true) {
-        return "Ativo"
-    } else {
-        return "Inativo"
-    }
+// Funções de formatação e renderização
+function renderizarStatus(ativo) {
+    const dotClass = ativo ? 'dot-ativo' : 'dot-inativo';
+    const texto = ativo ? 'Ativo' : 'Inativo';
+    return `
+        <div class="status-container">
+            <span class="status-dot ${dotClass}"></span>
+            <span>${texto}</span>
+        </div>
+    `;
 }
 
-//Tranforma o Enuma ADMINISTRADOR para Administrador
 function formatarPerfil(perfil) {
     if (perfil == null) return ""
     return perfil.charAt(0).toUpperCase() + perfil.slice(1).toLowerCase()
 }
 
-// Renderização da tabela
-function atualizarTabela(usuarios) {
-    let tabela = document.getElementById("tabelaUsuarios")
+// SVGs para os ícones
+const iconEditar = `<svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`;
+const iconDesativar = `<svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>`;
+const iconAtivar = `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>`;
 
-    //limpa a tabela antes de preencher para não duplicar dados
+// Ordenação
+function ordenarDados(coluna, alternarDirecao) {
+    if (alternarDirecao) {
+        if (sortColumn === coluna) {
+            sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            sortColumn = coluna;
+            sortDirection = 'asc';
+        }
+    }
+
+    usuariosFull.sort((a, b) => {
+        let valA = a[coluna];
+        let valB = b[coluna];
+
+        // Trata strings para comparação ignorando maiúsculas/minúsculas
+        if (typeof valA === 'string') valA = valA.toLowerCase();
+        if (typeof valB === 'string') valB = valB.toLowerCase();
+
+        if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
+        if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
+        return 0;
+    });
+
+    atualizarIconesOrdenacao();
+}
+
+function atualizarIconesOrdenacao() {
+    document.querySelectorAll("th").forEach(th => {
+        th.classList.remove("sort-asc", "sort-desc");
+        if (th.getAttribute("data-column") === sortColumn) {
+            th.classList.add(sortDirection === 'asc' ? "sort-asc" : "sort-desc");
+        }
+    });
+}
+
+// Renderização da tabela
+function atualizarTabela() {
+    let tabela = document.getElementById("tabelaUsuarios")
     tabela.innerHTML = "";
 
-    for (let i = 0; i < usuarios.length; i++) {
-        let u = usuarios[i]
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const usuariosExibidos = usuariosFull.slice(startIndex, endIndex);
 
-        //Monta a linha <tr> concatenando as células <td> com os dados do usuário
+    for (let i = 0; i < usuariosExibidos.length; i++) {
+        let u = usuariosExibidos[i]
+
+        let acaoBtn = u.ativo 
+            ? `<button class="btn-acao btn-desativar" title="Desativar" onclick="desativarUsuario(${u.id})">${iconDesativar}</button>`
+            : `<button class="btn-acao btn-ativar" title="Ativar" onclick="ativarUsuario(${u.id})">${iconAtivar}</button>`;
+
         let linha = "<tr>" +
             "<td>" + u.id + "</td>" +
             "<td>" + u.nome + "</td>" +
             "<td>" + u.email + "</td>" +
             "<td>" + formatarPerfil(u.perfil) + "</td>" +
-            "<td>" + formatarStatus(u.ativo) + "</td>" +
+            "<td>" + renderizarStatus(u.ativo) + "</td>" +
             "<td>" +
-            "<button onclick='editarUsuario(" + u.id + ")'>Editar</button>" +
-            "<button onclick='desativarUsuario(" + u.id + ")'>Desativar</button>" +
+            `<button class="btn-acao btn-editar" title="Editar" onclick="editarUsuario(${u.id})">${iconEditar}</button>` +
+            acaoBtn +
             "</td>" +
             "</tr>"
 
         tabela.innerHTML += linha;
     }
+
+    atualizarControlesPaginacao();
 }
 
-//Função de cadastro de usuário
+function atualizarControlesPaginacao() {
+    const totalPages = Math.ceil(usuariosFull.length / itemsPerPage) || 1;
+    document.getElementById("infoPagina").innerText = `Página ${currentPage} de ${totalPages}`;
+    document.getElementById("btnAnterior").disabled = (currentPage === 1);
+    document.getElementById("btnProximo").disabled = (currentPage === totalPages);
+}
+
+function mudarPagina(delta) {
+    const totalPages = Math.ceil(usuariosFull.length / itemsPerPage) || 1;
+    const novaPagina = currentPage + delta;
+
+    if (novaPagina >= 1 && novaPagina <= totalPages) {
+        currentPage = novaPagina;
+        atualizarTabela();
+    }
+}
+
+// Modais
+function abrirModalCadastro() {
+    document.getElementById("modalCadastro").style.display = "flex";
+}
+
+function abrirModalEdicao(id) {
+    const usuario = usuariosFull.find(u => u.id === id);
+    if (usuario) {
+        document.getElementById("idEdite").value = usuario.id;
+        document.getElementById("nomeEdit").value = usuario.nome;
+        document.getElementById("emailEdit").value = usuario.email;
+        document.getElementById("perfilEdite").value = usuario.perfil;
+        document.getElementById("modalEdicao").style.display = "flex";
+    }
+}
+
+function fecharModais() {
+    document.getElementById("modalCadastro").style.display = "none";
+    document.getElementById("modalEdicao").style.display = "none";
+}
+
+function editarUsuario(id) {
+    abrirModalEdicao(id);
+}
+
 function salvarUsuario() {
-    //Captura os dados digitados no formulário
-    let nomeDigitado = document.getElementById("nomeNovo").value;
-    let emailDigitado = document.getElementById("emailNovo").value
-    let senhaDigitada = document.getElementById("senhaNova").value
-    let perfilSelecionado = document.getElementById("perfilNovo").value
+    let nome = document.getElementById("nomeNovo").value;
+    let email = document.getElementById("emailNovo").value;
+    let senha = document.getElementById("senhaNova").value;
+    let perfil = document.getElementById("perfilNovo").value;
 
-    // Validação simples para não enviar dados vazios
-    if (nomeDigitado === "" || emailDigitado === "" || senhaDigitada === "") {
-        alert("Por favor, preencha todos os campos.")
-        return
-    }
-    if (senhaDigitada.length < 8) {
-        alert("A senha deve ter no mínimo 8 caracteres.")
-        return
+    if (!nome || !email || !senha) {
+        alert("Por favor, preencha todos os campos.");
+        return;
     }
 
-    // Monta o DTO que será enviado no corpo da requisição
-    let novoUsuario = {
-        nome: nomeDigitado,
-        email: emailDigitado,
-        senha: senhaDigitada,
-        perfil: perfilSelecionado
-    }
+    let novoUsuario = { nome, email, senha, perfil };
 
-    let url = "http://localhost:8080/usuarios"
-
-    fetch(url, {
+    fetch("http://localhost:8080/usuarios", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(novoUsuario)
     })
-        .then(function (response) {
-            // trata as resposta com base nos códigos https devolvidos
-            if (response.status === 201) {
-                alert("Usuário cadastrado com sucesso")
+    .then(response => {
+        if (response.status === 201) {
+            alert("Usuário cadastrado com sucesso");
+            fecharModais();
+            document.getElementById("nomeNovo").value = "";
+            document.getElementById("emailNovo").value = "";
+            document.getElementById("senhaNova").value = "";
+            listaUsuarios();
+        } else if (response.status === 409) {
+            alert("Erro: Este e-mail já está cadastrado.");
+        } else {
+            throw new Error("Erro ao salvar");
+        }
+    })
+    .catch(erro => console.error("Erro ao salvar: ", erro));
+}
 
-                //Limpa os campos do formulário
-                document.getElementById("nomeNovo").value = ""
-                document.getElementById("emailNovo").value = ""
-                document.getElementById("senhaNova").value = ""
+function enviarEdicao() {
+    const id = document.getElementById("idEdite").value;
+    const nome = document.getElementById("nomeEdit").value;
+    const email = document.getElementById("emailEdit").value;
+    const perfil = document.getElementById("perfilEdite").value;
 
-                //Chama listarUsuarios() para atualizar a tabela automaticamente
-                listaUsuarios()
-            } else if (response.status === 409) {
-                alert("Erro: Este e-mail já está cadastrado.")
-            } else if (response.status === 400) {
-                alert("Erro: Dados inválidos. Verifique os campos")
-            } else {
-                throw new Error("Erro no servidor ao tentar salvar.")
-            }
-        })
-        .catch(function (erro) {
-            console.error("Erro ao salvar usuário: ", erro)
-        })
+    if (!nome || !email) {
+        alert("Nome e E-mail são obrigatórios.");
+        return;
+    }
+
+    const usuarioEditado = { nome, email, perfil };
+
+    fetch(`http://localhost:8080/usuarios/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(usuarioEditado)
+    })
+    .then(response => {
+        if (response.status === 200) {
+            alert("Usuário atualizado com sucesso");
+            fecharModais();
+            listaUsuarios();
+        } else {
+            throw new Error("Erro ao atualizar");
+        }
+    })
+    .catch(erro => console.error("Erro ao editar: ", erro));
 }
 
 function desativarUsuario(id) {
-    // confirmação de segurança para o caso de click acidentais
-    const confirmacao = confirm("Tem certeza que deseja desativar esse usuário?")
-    if (!confirmacao) {
-        return // interrompe a operação se o usuário cancelar
-    }
+    if (!confirm("Tem certeza que deseja desativar esse usuário?")) return;
 
-    let url = `http://localhost:8080/usuarios/${id}/desativar`
-
-    fetch(url, {
+    fetch(`http://localhost:8080/usuarios/${id}/desativar`, {
         method: "PATCH",
-        headers: {
-            "Content-Type": "application/json"
+        headers: { "Content-Type": "application/json" }
+    })
+    .then(response => {
+        if (response.status === 204) {
+            listaUsuarios();
+        } else {
+            alert("Erro ao desativar usuário.");
         }
     })
-        .then(function (response) {
-                if (response.status === 204) {
-                    console.log(`Usuário ${id} desativado com sucesso.`)
-                    listaUsuarios()
-                } else if (response.status === 401) {
-                    alert("Sua sessão expirou. Faça login novamente.");
-                    window.location.href = "/auth/login"
-                } else if (response.status === 403) {
-                    alert("Ação negada: Você não tem permissão ou não pode desativar a si mesmo.")
-                } else if (response.status === 404) {
-                    alert("Erro: O usuário não foi encontrado no sistema.")
-                } else {
-                    throw new Error("Erro no servidor ao tentar salvar.")
-                }
-            }
-        )
-        .catch(function (erro) {
-            console.error("Erro ao desativar usuário: ", erro)
-        })
+    .catch(erro => console.error("Erro ao desativar: ", erro));
+}
+
+function ativarUsuario(id) {
+    if (!confirm("Deseja reativar este usuário?")) return;
+
+    fetch(`http://localhost:8080/usuarios/${id}/ativar`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" }
+    })
+    .then(response => {
+        if (response.status === 204) {
+            listaUsuarios();
+        } else {
+            alert("Erro ao ativar usuário.");
+        }
+    })
+    .catch(erro => console.error("Erro ao ativar: ", erro));
 }

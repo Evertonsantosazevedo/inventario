@@ -1,89 +1,58 @@
-# inventario
+# Sistema de Gerenciamento de Inventário
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Este projeto é um software completo para gerenciamento de estoque, desenvolvido como projeto prático para a disciplina de Programação para Web. A aplicação utiliza tecnologias modernas no ecossistema Java (Quarkus) e uma interface web responsiva e intuitiva.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+## 🚀 Tecnologias Utilizadas
 
-## Running the application in dev mode
+### Back-end
+*   **Java 11+**
+*   **Quarkus**: Framework Java nativo para nuvem.
+*   **JAX-RS**: Para criação de endpoints REST.
+*   **Hibernate ORM com Panache**: Camada de persistência simplificada.
+*   **SmallRye JWT**: Segurança e autenticação baseada em tokens.
+*   **PostgreSQL**: Banco de dados relacional.
 
-You can run your application in dev mode that enables live coding using:
+### Front-end
+*   **HTML5 & CSS3**: Interface moderna com tema escuro.
+*   **JavaScript (Vanilla)**: Lógica de interface, consumo de APIs e manipulação do DOM.
+*   **Qute**: Mecanismo de templates do Quarkus para renderização de páginas.
 
+## 🏛️ Arquitetura e Padrões
+O projeto segue rigorosamente o modelo **MVC** (Model-View-Controller) e utiliza os seguintes padrões:
+*   **DAO (Data Access Object)**: Isolamento do acesso aos dados.
+*   **Entity**: Representação fiel das tabelas do banco de dados.
+*   **BO (Business Object)**: Centralização de TODAS as regras de negócio e validações.
+*   **DTO (Data Transfer Object)**: Comunicação exclusiva entre front-end e back-end para garantir segurança e performance.
+
+## 🔐 Funcionalidades Principais
+
+1.  **Autenticação e Segurança**: Login seguro via JWT. Sessões protegidas e controle de acesso baseado em perfis (RBAC).
+2.  **Gerenciamento de Usuários (ADM)**: Cadastro, edição e ativação/desativação de operadores do sistema.
+3.  **Catálogo de Produtos**: Controle centralizado de itens, marcas e valores, com busca e ordenação.
+4.  **Movimentações de Estoque**: Registro de entradas e saídas com atualização em tempo real do saldo e validação de estoque insuficiente.
+5.  **Auditoria Automatizada**: Registro sistêmico de todas as ações realizadas pelos usuários (Quem, O que e Quando).
+
+## 👥 Perfis de Acesso
+*   **ADMINISTRADOR**: Acesso total ao sistema, incluindo gestão de usuários, auditoria e controle estrutural de produtos.
+*   **OPERADOR**: Focado na operação diária, com acesso ao catálogo de produtos e registro de entradas/saídas de estoque.
+
+## 🛠️ Como Executar
+
+### Pré-requisitos
+*   Java 11 ou superior instalado.
+*   Banco de Dados PostgreSQL configurado (conforme `application.properties`).
+
+### Execução em modo de desenvolvimento
 ```shell script
 ./mvnw quarkus:dev
 ```
+A aplicação estará disponível em `http://localhost:8080`.
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
-
-## Packaging and running the application
-
-The application can be packaged using:
-
+### Compilação e Empacotamento
 ```shell script
 ./mvnw package
 ```
+O arquivo gerado será `target/quarkus-app/quarkus-run.jar`.
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/inventario-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Related Guides
-
-- REST ([guide](https://quarkus.io/guides/rest)): Build RESTful web services and APIs using Jakarta REST (formerly JAX-RS)
-- Hibernate Validator ([guide](https://quarkus.io/guides/validation)): Bean validation using Hibernate Validator and Jakarta Validation annotations
-- REST Qute ([guide](https://quarkus.io/guides/qute-reference#rest_integration)): Qute integration for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplified JPA/Hibernate data access layer with active record and repository patterns
-- SmallRye JWT ([guide](https://quarkus.io/guides/security-jwt)): Secure your applications with JSON Web Token
-- SmallRye JWT Build ([guide](https://quarkus.io/guides/security-jwt-build)): Create JSON Web Token with SmallRye JWT Build API
-- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
-
-## Provided Code
-
-### Hibernate ORM
-
-Create your first JPA entity
-
-[Related guide section...](https://quarkus.io/guides/hibernate-orm)
-
-
-[Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
-
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
-
-### REST Qute
-
-Create your web page using Quarkus REST and Qute
-
-[Related guide section...](https://quarkus.io/guides/qute#type-safe-templates)
+---
+**Desenvolvido como projeto prático individual.**

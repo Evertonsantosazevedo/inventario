@@ -8,9 +8,10 @@
 </head>
 <body>
 <div class="container">
-    <!--Agrupar o título e botão de voltar lado a lado -->
+    <!--Agrupar o título e botões lado a lado -->
     <div class="header-tabela">
         <h1>Gerenciamento de Usuários</h1>
+        <button class="btn-novo" onclick="abrirModalCadastro()">Novo Usuário</button>
         <a href="/auth/dashboard" class="btn-voltar">Voltar</a>
     </div>
     <!-- Container responsivo para evitar que a tabela quebre em telas menores -->
@@ -18,10 +19,10 @@
         <table>
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>E-mail</th>
-                <th>Perfil</th>
+                <th data-column="id">ID</th>
+                <th data-column="nome">Nome</th>
+                <th data-column="email">E-mail</th>
+                <th data-column="perfil">Perfil</th>
                 <th>Status</th>
                 <th>Ações</th>
             </tr>
@@ -31,49 +32,69 @@
             </tbody>
         </table>
     </div>
-    <!-- Formulário de cadastro -->
-    <div class="formulario-cadastro">
-        <h2>Cadastrar Novo Usuário</h2>
 
-        <label for="nomeNovo">Nome:</label>
-        <input type="text" id="nomeNovo" placeholder="Digite o nome completo">
-
-        <label for="emailNovo">E-mail:</label>
-        <input type="email" id="emailNovo" placeholder="Digite o e-mail">
-
-        <label for="senhaNova">Senha:</label>
-        <input type="password" id="senhaNova" placeholder="Digite a senha">
-
-        <label for="perfilNovo">Perfil:</label>
-        <select id="perfilNovo">
-            <!-- Opções de acordo com o ENUM -->
-            <option value="ADMINISTRADOR">Administrador</option>
-            <option value="OPERADOR">Operador</option>
-        </select>
-
-        <button type="button" onclick="salvarUsuario()">Salvar Usuário</button>
+    <!-- Controles de Paginação -->
+    <div class="paginacao">
+        <button id="btnAnterior" onclick="mudarPagina(-1)">Anterior</button>
+        <span id="infoPagina">Página 1 de 1</span>
+        <button id="btnProximo" onclick="mudarPagina(1)">Próximo</button>
     </div>
-    <!-- Formulário de Edição (Fica escondido até clicar em Editar) -->
-    <div id="formEdicao">
-        <h2>Editar Usuários</h2>
 
-        <input type="hidden" id="idEdite">
+</div>
 
-        <label for="nomeEdit">Nome:</label>
-        <input type="text" id="nomeEdit">
+<!-- Modal de Cadastro -->
+<div id="modalCadastro" class="modal-overlay">
+    <div class="modal-content">
+        <button class="btn-fechar-modal" onclick="fecharModais()">&times;</button>
+        <div class="formulario-cadastro">
+            <h2>Cadastrar Novo Usuário</h2>
 
-        <label for="emailEdit">E-mail:</label>
-        <input type="email" id="emailEdit">
+            <label for="nomeNovo">Nome:</label>
+            <input type="text" id="nomeNovo" placeholder="Digite o nome completo">
 
-        <label for="perfilEdite">Perfil:</label>
-        <select id="perfilEdite">
-            <option value="ADMINISTRADOR">Administrador</option>
-            <option value="OPERADOR">Operador</option>
-        </select>
+            <label for="emailNovo">E-mail:</label>
+            <input type="email" id="emailNovo" placeholder="Digite o e-mail">
 
-        <button type="button" onclick="enviarEdicao()">Atualizar Usuário</button>
-        <button type="button" onclick="cancelarEdicao()">Cancelar</button>
+            <label for="senhaNova">Senha:</label>
+            <input type="password" id="senhaNova" placeholder="Digite a senha">
+
+            <label for="perfilNovo">Perfil:</label>
+            <select id="perfilNovo">
+                <option value="ADMINISTRADOR">Administrador</option>
+                <option value="OPERADOR">Operador</option>
+            </select>
+
+            <button type="button" onclick="salvarUsuario()">Salvar Usuário</button>
+        </div>
     </div>
+</div>
+
+<!-- Modal de Edição -->
+<div id="modalEdicao" class="modal-overlay">
+    <div class="modal-content">
+        <button class="btn-fechar-modal" onclick="fecharModais()">&times;</button>
+        <div id="formEdicao">
+            <h2>Editar Usuário</h2>
+
+            <input type="hidden" id="idEdite">
+
+            <label for="nomeEdit">Nome:</label>
+            <input type="text" id="nomeEdit">
+
+            <label for="emailEdit">E-mail:</label>
+            <input type="email" id="emailEdit">
+
+            <label for="perfilEdite">Perfil:</label>
+            <select id="perfilEdite">
+                <option value="ADMINISTRADOR">Administrador</option>
+                <option value="OPERADOR">Operador</option>
+            </select>
+
+            <button type="button" onclick="enviarEdicao()">Atualizar Usuário</button>
+            <button type="button" onclick="fecharModais()">Cancelar</button>
+        </div>
+    </div>
+</div>
 
 </div>
 </body>

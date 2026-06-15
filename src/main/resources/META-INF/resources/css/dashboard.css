@@ -54,21 +54,36 @@ nav li {
 }
 
 nav a {
-    display: block; /*Faz o link ocupar a linha toda, virando botão*/
-    text-decoration: none; /*Tira o sublinhado*/
+    display: flex; /* Alinha ícone e texto */
+    align-items: center;
+    text-decoration: none;
     color: #c7d1db;
     background-color: #282b30;
     padding: 12px 15px;
     border-radius: 6px;
-    transition: all 0.2s ease-in-out; /*Animação suave ao passar o mouse*/
-    border-left: 4px solid transparent; /*Preparação para o efeito do hover*/
+    transition: all 0.2s ease-in-out;
+    border-left: 4px solid transparent;
+    gap: 12px; /* Espaço entre ícone e texto */
 }
 
-/*Efeito ao passar o mouse nos links*/
+/* Estilo dos ícones */
+nav a svg {
+    width: 20px;
+    height: 20px;
+    fill: #3498db; /* Cor dos ícones combinando com o tema */
+    transition: transform 0.2s ease;
+}
+
+/* Efeito ao passar o mouse nos links */
 nav a:hover {
-    background-color: #36393e;
-    border-left: 4px solid #3498db; /*barra azul a esquerda*/
+    background-color: #36393e; /* Fundo levemente mais claro */
+    border-left: 4px solid #3498db;
     color: #ffffff;
+}
+
+nav a:hover svg {
+    transform: scale(1.1); /* Pequeno zoom no ícone */
+    fill: #ffffff;
 }
 
 /*Botão de sair*/

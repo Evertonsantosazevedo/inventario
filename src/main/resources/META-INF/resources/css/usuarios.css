@@ -26,14 +26,39 @@ body {
 
 .header-tabela {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     margin-bottom: 25px;
+}
+
+.header-tabela h1 {
+    flex-grow: 1;
 }
 
 h1 {
     font-size: 1.5rem;
     color: #ffffff;
+}
+
+.btn-novo {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 0.9rem;
+    padding: 8px 18px;
+    background-color: #3498db;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    margin-right: 10px;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+.btn-novo:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
 }
 
 .btn-voltar {
@@ -51,39 +76,65 @@ h1 {
     color: #ffffff;
 }
 
-/*Estilização da tabela*/
+/* Estilização da tabela */
 
 .tabela-responsivo {
-    overflow-x: auto; /* Adiciona barra de rolagem*/
+    overflow-x: auto;
 }
 
 table {
     width: 100%;
-    border-collapse: collapse; /*Remove espaço duplo entre as bordas*/
+    border-collapse: collapse;
     text-align: left;
 }
 
-/*Cabeçalho da tabela*/
+/* Cabeçalho da tabela */
 th {
     background-color: #282b30;
-    color: #3498db; /*Destaca os títulos das colunas*/
+    color: #3498db;
     padding: 15px;
     font-weight: 600;
     font-size: 0.95rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    transition: background-color 0.2s ease;
 }
 
-/*Células do corpo da tabela*/
+th:hover {
+    background-color: #32353b;
+}
+
+/* Ícone de ordenação */
+th::after {
+    content: '↕';
+    position: absolute;
+    right: 8px;
+    opacity: 0.3;
+    font-size: 0.8rem;
+}
+
+th.sort-asc::after {
+    content: '↑';
+    opacity: 1;
+}
+
+th.sort-desc::after {
+    content: '↓';
+    opacity: 1;
+}
+
+/* Células do corpo da tabela */
 td {
-    padding: 15px;
-    border-bottom: 1px solid #2f3338; /*Linha divisória entre os usuários*/
+    padding: 12px 15px;
+    border-bottom: 1px solid #2f3338;
     color: #c7d1db;
     font-size: 0.95rem;
 }
 
-/*Efeito ao passar o mouse na linha do usuário*/
-
+/* Efeito ao passar o mouse na linha do usuário */
 tbody tr {
     transition: background-color 0.2s ease;
 }
@@ -92,80 +143,179 @@ tbody tr:hover {
     background-color: #2a2d32;
 }
 
-/*Estilo para coluna de status ativo/inativo*/
-td:nth-child(4) {
-    font-weight: 600;
+/* Indicador de Status (Bolinha) */
+.status-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/*Estilização para botões injetos pelo JS*/
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
 
-/*Estilo geral dos botões*/
-td button {
+.dot-ativo {
+    background-color: #2ecc71;
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.4);
+}
+
+.dot-inativo {
+    background-color: #e74c3c;
+    box-shadow: 0 0 8px rgba(231, 76, 60, 0.4);
+}
+
+/* Estilização para botões de ícone na tabela */
+.btn-acao {
     background-color: transparent;
-    padding: 6px 12px;
-    margin-right: 8px; /*Espaçamento entre os botões dentro da tabela*/
-    border-radius: 4px;
-    font-size: 0.85rem;
-    font-weight: 600;
+    border: none;
+    padding: 8px;
     cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-acao svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.btn-editar {
+    color: #3498db;
+}
+
+.btn-editar:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.btn-desativar {
+    color: #e74c3c;
+}
+
+.btn-desativar:hover {
+    background-color: rgba(231, 76, 60, 0.1);
+}
+
+.btn-ativar {
+    color: #2ecc71;
+}
+
+.btn-ativar:hover {
+    background-color: rgba(46, 204, 113, 0.1);
+}
+
+/* Controles de Paginação */
+.paginacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    gap: 15px;
+}
+
+.paginacao button {
+    background-color: #282b30;
+    color: #ffffff;
+    border: 1px solid #36393e;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
     transition: all 0.2s ease;
 }
 
-/*Botão 1*/
-td button:first-child {
+.paginacao button:hover:not(:disabled) {
+    border-color: #3498db;
     color: #3498db;
-    border: 1px solid #3498db;
 }
 
-td button:first-child:hover {
-    background-color: #3498db;
+.paginacao button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.paginacao span {
+    font-size: 0.95rem;
+    color: #c7d1db;
+}
+
+/* Estrutura dos Modais */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: none; /* Escondido por padrão */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #1e2124;
+    width: 100%;
+    max-width: 450px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.btn-fechar-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #7f8c8d;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.btn-fechar-modal:hover {
     color: #ffffff;
 }
 
-/*Botão 2 excluir*/
-td button:last-child {
-    color: #e74c3c;
-    border: 1px solid #e74c3c;
-}
-
-td button:last-child:hover {
-    background-color: #e74c3c;
-    color: #ffffff;
-}
-
-/*formulário de cadastro*/
-.formulario-cadastro{
-    margin-top: 40px;
-    padding-top: 30px;
-    border-top: 1px solid #2f3338;
+/* Estilização dos formulários (Cadastro e Edição) */
+.formulario-cadastro,
+#formEdicao {
     display: flex;
     flex-direction: column;
-    max-width: 400px;
 }
 
-/*Título da seção*/
-.formulario-cadastro h2{
+.formulario-cadastro h2,
+#formEdicao h2 {
     font-size: 1.2rem;
     color: #ffffff;
-    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-/*Estilo das etiquetas*/
-.formulario-cadastro label{
+.formulario-cadastro label,
+#formEdicao label {
     color: #c7d1db;
     font-size: 0.9rem;
     margin-bottom: 6px;
     margin-top: 12px;
     font-weight: 500;
 }
-/*remove marge superior da primeira etiqueta para alinhar melhor*/
-.formulario-cadastro label:first-of-type{
+
+.formulario-cadastro label:first-of-type,
+#formEdicao label:first-of-type {
     margin-top: 0;
 }
 
-/* Caixa de texto e caixa de seleção*/
 .formulario-cadastro input,
-.formulario-cadastro select{
+.formulario-cadastro select,
+#formEdicao input,
+#formEdicao select {
     width: 100%;
     padding: 12px 15px;
     background-color: #282b30;
@@ -177,28 +327,15 @@ td button:last-child:hover {
     transition: border-color 0.3s ease;
 }
 
-/*Efeito ao clicar para digitar/selecionar*/
 .formulario-cadastro input:focus,
-.formulario-cadastro select:focus{
+.formulario-cadastro select:focus,
+#formEdicao input:focus,
+#formEdicao select:focus {
     border-color: #3498db;
 }
 
-/*Cor do texto do placeholder*/
-.formulario-cadastro input::placeholder{
-    color: #7f8c8d;
-}
-
-/*Ajuste específico para a tag select*/
-.formulario-cadastro select{
-    cursor: pointer;
-}
-
-.formulario-cadastro select option{
-    background-color: #282b30;
-    color: #ffffff;
-}
-
-.formulario-cadastro button{
+.formulario-cadastro button,
+#formEdicao button {
     width: 100%;
     padding: 12px;
     margin-top: 25px;
@@ -212,7 +349,20 @@ td button:last-child:hover {
     transition: all 0.3s ease;
 }
 
-.formulario-cadastro button:hover {
+.formulario-cadastro button:hover,
+#formEdicao button:hover {
     background-color: #3498db;
-    color: #1e2124; /* Texto escuro para contrastar quando o fundo ficar azul */
+    color: #1e2124;
+}
+
+/* Botão de cancelar específico para edição */
+#formEdicao button:last-child {
+    margin-top: 10px;
+    color: #e74c3c;
+    border-color: #e74c3c;
+}
+
+#formEdicao button:last-child:hover {
+    background-color: #e74c3c;
+    color: #1e2124;
 }

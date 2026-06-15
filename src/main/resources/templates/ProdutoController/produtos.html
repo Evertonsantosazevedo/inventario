@@ -10,6 +10,7 @@
 <div class="container">
     <div class="header-tabela">
         <h1>Catálogo de Produtos</h1>
+        <button class="btn-novo" onclick="abrirModalCadastro()">Novo Produto</button>
         <a href="/auth/dashboard" class="btn-voltar">Voltar</a>
     </div>
 
@@ -17,12 +18,12 @@
         <table>
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Código</th>
-                <th>Nome</th>
-                <th>Marca</th>
-                <th>Qtd</th>
-                <th>Valor Venda</th>
+                <th data-column="id">ID</th>
+                <th data-column="codigo">Código</th>
+                <th data-column="nome">Nome</th>
+                <th data-column="marca">Marca</th>
+                <th data-column="quantidade">Qtd</th>
+                <th data-column="valorVenda">Valor Venda</th>
                 <th>Ações</th>
             </tr>
             </thead>
@@ -31,39 +32,84 @@
         </table>
     </div>
 
-    <div class="formulario-cadastro">
-        <h2>Cadastrar Novo Produto</h2>
-
-        <label for="codigoNovo">Código:</label>
-        <input type="text" id="codigoNovo" placeholder="Ex: P001">
-
-        <label for="nomeNovo">Nome:</label>
-        <input type="text" id="nomeNovo" placeholder="Nome do produto">
-
-        <label for="marcaNova">Marca:</label>
-        <input type="text" id="marcaNova" placeholder="Marca">
-
-        <label for="quantidadeInicial">Quantidade Inicial:</label>
-        <input type="number" id="quantidadeInicial" value="0">
-
-        <label for="valorVendaNovo">Valor de Venda:</label>
-        <input type="number" id="valorVendaNovo" step="0.01">
-
-        <button type="button" onclick="salvarProduto()">Salvar Produto</button>
+    <!-- Controles de Paginação -->
+    <div class="paginacao">
+        <button id="btnAnterior" onclick="mudarPagina(-1)">Anterior</button>
+        <span id="infoPagina">Página 1 de 1</span>
+        <button id="btnProximo" onclick="mudarPagina(1)">Próximo</button>
     </div>
 
-    <!-- Div de Entrada de Estoque (Estilizada no usuarios.css ou classe similar) -->
-    <div id="formEntrada" class="formulario-cadastro" style="display: none; border-top: 2px solid #3498db; margin-top: 30px;">
-        <h2>Registrar Entrada</h2>
-        <input type="hidden" id="idEntrada">
-        <p>Produto: <strong id="nomeEntrada"></strong></p>
-        
-        <label for="qtdEntrada">Quantidade a adicionar:</label>
-        <input type="number" id="qtdEntrada" min="1">
-        
-        <button type="button" onclick="confirmarEntrada()">Confirmar Entrada</button>
-        <button type="button" onclick="fecharEntrada()" style="background-color: transparent; color: #e74c3c; border-color: #e74c3c; margin-top: 10px;">Cancelar</button>
+</div>
+
+<!-- Modal de Cadastro -->
+<div id="modalCadastro" class="modal-overlay">
+    <div class="modal-content">
+        <button class="btn-fechar-modal" onclick="fecharModais()">&times;</button>
+        <div class="formulario-cadastro">
+            <h2>Cadastrar Novo Produto</h2>
+
+            <label for="codigoNovo">Código:</label>
+            <input type="text" id="codigoNovo" placeholder="Ex: P001">
+
+            <label for="nomeNovo">Nome:</label>
+            <input type="text" id="nomeNovo" placeholder="Nome do produto">
+
+            <label for="marcaNova">Marca:</label>
+            <input type="text" id="marcaNova" placeholder="Marca">
+
+            <label for="quantidadeInicial">Quantidade Inicial:</label>
+            <input type="number" id="quantidadeInicial" value="0">
+
+            <label for="valorVendaNovo">Valor de Venda:</label>
+            <input type="number" id="valorVendaNovo" step="0.01" placeholder="0,00">
+
+            <button type="button" onclick="salvarProduto()">Salvar Produto</button>
+        </div>
     </div>
+</div>
+
+<!-- Modal de Edição -->
+<div id="modalEdicao" class="modal-overlay">
+    <div class="modal-content">
+        <button class="btn-fechar-modal" onclick="fecharModais()">&times;</button>
+        <div class="formulario-cadastro">
+            <h2>Editar Produto</h2>
+            <input type="hidden" id="idEdit">
+
+            <label for="codigoEdit">Código:</label>
+            <input type="text" id="codigoEdit">
+
+            <label for="nomeEdit">Nome:</label>
+            <input type="text" id="nomeEdit">
+
+            <label for="marcaEdit">Marca:</label>
+            <input type="text" id="marcaEdit">
+
+            <label for="valorVendaEdit">Valor de Venda:</label>
+            <input type="number" id="valorVendaEdit" step="0.01">
+
+            <button type="button" onclick="enviarEdicao()">Atualizar Produto</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Entrada de Estoque -->
+<div id="modalEntrada" class="modal-overlay">
+    <div class="modal-content">
+        <button class="btn-fechar-modal" onclick="fecharModais()">&times;</button>
+        <div class="formulario-cadastro">
+            <h2>Registrar Entrada</h2>
+            <input type="hidden" id="idEntrada">
+            <p style="margin-bottom: 15px; color: #c7d1db;">Produto: <strong id="nomeEntrada" style="color: #ffffff;"></strong></p>
+            
+            <label for="qtdEntrada">Quantidade a adicionar:</label>
+            <input type="number" id="qtdEntrada" min="1" value="1">
+            
+            <button type="button" onclick="confirmarEntrada()">Confirmar Entrada</button>
+            <button type="button" onclick="fecharModais()" style="background-color: transparent; color: #e74c3c; border-color: #e74c3c; margin-top: 10px;">Cancelar</button>
+        </div>
+    </div>
+</div>
 
 </div>
 </body>

@@ -14,10 +14,14 @@ window.onload = function () {
     }
 
     if (perfil === 'ADMINISTRADOR') {
-        // se for adm, removemos o display:none dos itens protegidos
-        document.getElementById('menu-usuarios').style.display = 'list-item'
-        document.getElementById('menu-catalogo').style.display = 'list-item'
-        document.getElementById('menu-auditoria').style.display = 'list-item'
+        // Administrador tem acesso total
+        document.getElementById('menu-usuarios').style.display = 'list-item';
+        document.getElementById('menu-catalogo').style.display = 'list-item';
+        document.getElementById('menu-auditoria').style.display = 'list-item';
+    } else if (perfil === 'OPERADOR') {
+        // Operador acessa apenas Movimentações e o Catálogo
+        document.getElementById('menu-catalogo').style.display = 'list-item';
+        // Usuários e Auditoria permanecem escondidos (display: none no HTML)
     }
 
 }

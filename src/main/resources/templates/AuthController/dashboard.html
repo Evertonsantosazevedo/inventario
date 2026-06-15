@@ -9,18 +9,38 @@
 </head>
 <body>
 <div class="container">
-    <h1>Bem vindo ao inventário!</h1>
+    <h1>Bem-vindo ao inventário!</h1>
 
     <nav>
         <h2>Menu principal</h2>
         <ul>
-            <!-- Itens exclussivos do adm -->
-            <li id="menu-usuarios" style="display: none"><a href="/usuarios/gerenciar">Gerenciar usuários</a></li>
-            <li id="menu-catalogo" style="display: none"><a href="/produtos/gerenciar">Cátalogo de produtos</a></li>
-            <li id="menu-auditoria" style="display: none"><a href="/auth/auditoria">Auditoria</a></li>
+            <!-- Itens exclusivos do adm -->
+            <li id="menu-usuarios" style="display: none">
+                <a href="/usuarios/gerenciar">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    Gerenciar usuários
+                </a>
+            </li>
+            <li id="menu-catalogo" style="display: none">
+                <a href="/produtos/gerenciar">
+                    <svg viewBox="0 0 24 24"><path d="M20 4.99V20c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V4.99c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2zM8 10h8v2H8v-2zm0 4h8v2H8v-2zm0-8h8v2H8V6z"/></svg>
+                    Catálogo de produtos
+                </a>
+            </li>
+            <li id="menu-auditoria" style="display: none">
+                <a href="/auth/auditoria">
+                    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 14l-4-4 1.41-1.41L11 12.17l4.59-4.59L17 9l-6 6z"/></svg>
+                    Auditoria
+                </a>
+            </li>
 
             <!-- Item liberado para adm e operador -->
-            <li><a href="/movimentacoes/gerenciar">Movimentações de estoque</a></li>
+            <li>
+                <a href="/movimentacoes/gerenciar">
+                    <svg viewBox="0 0 24 24"><path d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"/></svg>
+                    Movimentações de estoque
+                </a>
+            </li>
         </ul>
     </nav>
     <button type="button" onclick="fazerLogout()">Sair</button>
