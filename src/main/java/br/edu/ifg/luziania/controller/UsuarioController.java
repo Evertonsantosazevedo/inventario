@@ -29,6 +29,7 @@ public class UsuarioController {
     @GET
     @Path("/gerenciar")
     @Produces(MediaType.TEXT_HTML)
+    @RolesAllowed("ADMINISTRADOR")
     public TemplateInstance telaGerenciarUsuarios(){
         return Templates.gerenciarUsuarios();
     }
@@ -51,6 +52,15 @@ public class UsuarioController {
     @RolesAllowed("ADMINISTRADOR")
     public Response desativarUsuario(@PathParam("id") Long id){
         usuarioBO.desativarUsuario(id);
+
+        return Response.noContent().build();
+    }
+
+    @Path("/{id}/ativar")
+    @PATCH
+    @RolesAllowed("ADMINISTRADOR")
+    public Response ativarUsuario(@PathParam("id") Long id){
+        usuarioBO.ativarUsuario(id);
 
         return Response.noContent().build();
     }

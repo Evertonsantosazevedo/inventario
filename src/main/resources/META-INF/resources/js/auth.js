@@ -20,7 +20,7 @@ async function fazerLogin() {
             return;
         }
         const dados = await resposta.json();
-        sessionStorage.setItem('token', dados.token);
+        sessionStorage.setItem('nome', dados.nome);
         sessionStorage.setItem('perfil', dados.perfil);
 
         window.location.href = "/auth/dashboard"

@@ -2,6 +2,8 @@ package br.edu.ifg.luziania.controller;
 
 import br.edu.ifg.luziania.model.bo.MovimentacaoBO;
 import br.edu.ifg.luziania.model.dto.SaidaEstoqueDTO;
+import io.quarkus.qute.CheckedTemplate;
+import io.quarkus.qute.TemplateInstance;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -21,6 +23,19 @@ public class MovimentacaoController {
 
     @Inject
     JsonWebToken jwt;
+
+    @CheckedTemplate
+    public static class Templates {
+        public static native TemplateInstance movimentacoes();
+    }
+
+    @GET
+    @Path("/gerenciar")
+    @Produces(MediaType.TEXT_HTML)
+    @RolesAllowed({"ADMINISTRADOR", "OPERADOR"})
+    public TemplateInstance telaMovimentacoes() {
+        return Templates.movimentacoes();
+    }
 
 
     @Path("/saida")

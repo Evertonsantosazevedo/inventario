@@ -35,8 +35,7 @@ public class UsuarioBO {
 
     }
 
-    public LoginResponseDTO realizarLogin(LoginRequestDTO loginRequestDTO) {
-
+    public AuthResultadoDTO realizarLogin(LoginRequestDTO loginRequestDTO) {
 
         UsuarioEntity usuario = usuarioDAO.buscarPorEmail(loginRequestDTO.email());
         if (usuario == null || !usuario.isAtivo()) {
@@ -56,7 +55,7 @@ public class UsuarioBO {
                 .expiresIn(3600) // 1 hora em segundos
                 .sign(); //Assina digitalmente e gera a string final
 
-        return new LoginResponseDTO(token, usuario.getNome(), usuario.getPerfil().name());
+        return new AuthResultadoDTO(token, usuario.getNome(), usuario.getPerfil().name());
 
     }
 
@@ -85,11 +84,20 @@ public class UsuarioBO {
         usuarioDAO.atualizar(usuarioAlvo);
     }
 
+    public void ativarUsuario(Long idParaAtivar) {
+        UsuarioEntity usuarioAlvo = usuarioDAO.buscarPorId(idParaAtivar);
+        if (usuarioAlvo == null) {
+            throw new WebApplicationException("Usuário não encontrado", 404);
+        }
+        usuarioAlvo.setAtivo(true);
+        usuarioDAO.atualizar(usuarioAlvo);
+    }
+
 
     public void editarUsuario(Long id, UsuarioEdicaoDTO edicaoDTO) {
 
         UsuarioEntity usuario = usuarioDAO.buscarPorId(id);
-        if (usuario == null){
+        if (usuario == null) {
             throw new WebApplicationException("Usuário não encontrado", 404);
         }
 
@@ -102,6 +110,11 @@ public class UsuarioBO {
         usuario.setNome(edicaoDTO.nome());
         usuario.setEmail(edicaoDTO.email());
         usuario.setPerfil(edicaoDTO.perfil());
+
+        // Atualiza a senha se for fornecida
+        if (edicaoDTO.senha() != null && !edicaoDTO.senha().isBlank()) {
+            usuario.setSenha(BcryptUtil.bcryptHash(edicaoDTO.senha()));
+        }
 
         usuarioDAO.atualizar(usuario);
     }

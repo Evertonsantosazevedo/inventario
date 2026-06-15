@@ -52,4 +52,12 @@ public class ProdutoDAO {
     public void atualizar(ProdutoEntity produto){
         entityManager.merge(produto);
     }
+
+    @Transactional
+    public void deletar(Long id) {
+        ProdutoEntity produto = buscarPorId(id);
+        if (produto != null) {
+            entityManager.remove(produto);
+        }
+    }
 }

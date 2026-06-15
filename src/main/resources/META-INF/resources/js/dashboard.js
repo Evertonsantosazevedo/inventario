@@ -1,9 +1,9 @@
-window.onload = function (){
-    // Procurar o token de acesso da secção
-    const token = sessionStorage.getItem('token');
+window.onload = function () {
+    // Procurar o perfil definido no login
+    const perfil = sessionStorage.getItem('perfil');
 
-    // Se o token for nulo indica que o usuário tentou pular a tela de login
-    if (token == null){
+    // Se o perfil for nulo indica que o usuário tentou pular a tela de login
+    if (perfil == null) {
         alert("Acesso negado");
 
         //Redireciona o usuário para tela de login
@@ -12,10 +12,8 @@ window.onload = function (){
         //encerra a execução
         return;
     }
-    //Lógica do menu dinâmico
-    const pefil = sessionStorage.getItem('perfil')
 
-    if (pefil === 'ADMINISTRADOR'){
+    if (perfil === 'ADMINISTRADOR') {
         // se for adm, removemos o display:none dos itens protegidos
         document.getElementById('menu-usuarios').style.display = 'list-item'
         document.getElementById('menu-catalogo').style.display = 'list-item'
@@ -24,11 +22,16 @@ window.onload = function (){
 
 }
 
-function fazerLogout(){
-    //Remove token e perfil do navegador
-    sessionStorage.removeItem('token')
-    sessionStorage.removeItem('perfil')
+async function fazerLogout() {
+    try {
+        await fetch('/auth/logout', {method: 'POST'})
+    }catch (e){
+        console.error("Erro ao deslogar no servidor", e)
+    }
 
-    // Joga o usuário de volta para tela de login
+    // Remove dados do navegador
+    sessionStorage.removeItem('nome')
+    sessionStorage.removeItem('perfil')
     window.location.href = "/auth/login"
+
 }
