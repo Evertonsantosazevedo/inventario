@@ -1,5 +1,6 @@
 package br.edu.ifg.luziania.controller;
 
+import br.edu.ifg.luziania.model.bo.AuditoriaBO;
 import br.edu.ifg.luziania.model.bo.UsuarioBO;
 import br.edu.ifg.luziania.model.dto.AuthResultadoDTO;
 import br.edu.ifg.luziania.model.dto.LoginRequestDTO;
@@ -20,6 +21,9 @@ public class AuthController {
 
     @Inject
     UsuarioBO usuarioBO;
+
+    @Inject
+    AuditoriaBO auditoriaBO;
 
     @CheckedTemplate
     public static class Templates {
@@ -57,6 +61,14 @@ public class AuthController {
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance telaAuditoria() {
         return Templates.auditoria();
+    }
+
+    @GET
+    @Path("/auditoria/dados")
+    @RolesAllowed("ADMINISTRADOR")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response listarAuditoria() {
+        return Response.ok(auditoriaBO.listarTodos()).build();
     }
 
     @Path("/login")

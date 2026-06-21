@@ -6,7 +6,7 @@ let sortColumn = 'id';
 let sortDirection = 'asc';
 
 function listaUsuarios() {
-    let url = "http://localhost:8080/usuarios";
+    let url = "/usuarios";
 
     fetch(url, {
             method: "GET",
@@ -200,7 +200,7 @@ function salvarUsuario() {
 
     let novoUsuario = { nome, email, senha, perfil };
 
-    fetch("http://localhost:8080/usuarios", {
+    fetch("/usuarios", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(novoUsuario)
@@ -235,7 +235,7 @@ function enviarEdicao() {
 
     const usuarioEditado = { nome, email, perfil };
 
-    fetch(`http://localhost:8080/usuarios/${id}`, {
+    fetch(`/usuarios/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(usuarioEditado)
@@ -255,7 +255,7 @@ function enviarEdicao() {
 function desativarUsuario(id) {
     if (!confirm("Tem certeza que deseja desativar esse usuário?")) return;
 
-    fetch(`http://localhost:8080/usuarios/${id}/desativar`, {
+    fetch(`/usuarios/${id}/desativar`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" }
     })
@@ -272,7 +272,7 @@ function desativarUsuario(id) {
 function ativarUsuario(id) {
     if (!confirm("Deseja reativar este usuário?")) return;
 
-    fetch(`http://localhost:8080/usuarios/${id}/ativar`, {
+    fetch(`/usuarios/${id}/ativar`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" }
     })

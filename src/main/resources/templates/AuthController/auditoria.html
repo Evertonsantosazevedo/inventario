@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Log de Auditoria</title>
     <link rel="stylesheet" href="/css/usuarios.css">
+    <script src="/js/auditoria.js" defer></script>
 </head>
 <body>
 <div class="container">
@@ -12,11 +13,30 @@
         <a href="/auth/dashboard" class="btn-voltar">Voltar</a>
     </div>
 
-    <p style="text-align: center; margin-top: 50px; color: #7f8c8d;">
-        A visualização detalhada da auditoria está em desenvolvimento. <br>
-        Os logs estão sendo gravados corretamente no banco de dados.
-    </p>
+    <div class="tabela-responsivo">
+        <table>
+            <thead>
+            <tr>
+                <th data-column="id">ID</th>
+                <th data-column="nomeUsuario">Usuário</th>
+                <th data-column="emailUsuario">E-mail</th>
+                <th data-column="acao">Ação Executada</th>
+                <th data-column="dataHora">Data/Hora</th>
+            </tr>
+            </thead>
+            <tbody id="tabelaAuditoria">
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Controles de Paginação -->
+    <div class="paginacao">
+        <button id="btnAnterior" onclick="mudarPagina(-1)">Anterior</button>
+        <span id="infoPagina">Página 1 de 1</span>
+        <button id="btnProximo" onclick="mudarPagina(1)">Próximo</button>
+    </div>
 
 </div>
 </body>
 </html>
+
