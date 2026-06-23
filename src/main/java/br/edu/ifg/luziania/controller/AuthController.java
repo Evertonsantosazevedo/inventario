@@ -1,6 +1,5 @@
 package br.edu.ifg.luziania.controller;
 
-import br.edu.ifg.luziania.model.bo.AuditoriaBO;
 import br.edu.ifg.luziania.model.bo.UsuarioBO;
 import br.edu.ifg.luziania.model.dto.AuthResultadoDTO;
 import br.edu.ifg.luziania.model.dto.LoginRequestDTO;
@@ -8,7 +7,6 @@ import br.edu.ifg.luziania.model.dto.LoginResponseDTO;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -22,18 +20,11 @@ public class AuthController {
     @Inject
     UsuarioBO usuarioBO;
 
-    @Inject
-    AuditoriaBO auditoriaBO;
-
     @CheckedTemplate
     public static class Templates {
         // O Quarkus vai procurar automaticamente o arquivo:
         // src/main/resources/templates/AuthController/login.html
         public static native TemplateInstance login();
-
-        public static native TemplateInstance dashboard();
-
-        public static native TemplateInstance auditoria();
     }
 
 
@@ -44,31 +35,6 @@ public class AuthController {
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance telaLogin() {
         return Templates.login();
-    }
-
-
-    @GET
-    @Path("/dashboard")
-    @PermitAll
-    @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance telaDashboard() {
-        return Templates.dashboard();
-    }
-
-    @GET
-    @Path("/auditoria")
-    @RolesAllowed("ADMINISTRADOR")
-    @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance telaAuditoria() {
-        return Templates.auditoria();
-    }
-
-    @GET
-    @Path("/auditoria/dados")
-    @RolesAllowed("ADMINISTRADOR")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response listarAuditoria() {
-        return Response.ok(auditoriaBO.listarTodos()).build();
     }
 
     @Path("/login")

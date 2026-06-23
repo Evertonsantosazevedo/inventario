@@ -6,7 +6,7 @@ let sortColumn = 'id';
 let sortDirection = 'desc'; // Ordena do mais recente para o mais antigo
 
 function listarLogs() {
-    fetch("/auth/auditoria/dados")
+    fetch("/auditoria/dados")
         .then(response => {
             if (response.status === 200) {
                 return response.json();

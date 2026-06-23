@@ -23,7 +23,7 @@ async function fazerLogin() {
         sessionStorage.setItem('nome', dados.nome);
         sessionStorage.setItem('perfil', dados.perfil);
 
-        window.location.href = "/auth/dashboard"
+        window.location.href = "/dashboard"
     } catch (erro) {
         console.error("Erro ao conectar com o servidor", erro);
         alert("O servidor está fora do ar.")
