@@ -21,7 +21,6 @@ window.onload = function () {
     } else if (perfil === 'OPERADOR') {
         // Operador acessa apenas Movimentações e o Catálogo
         document.getElementById('menu-catalogo').style.display = 'list-item';
-        // Usuários e Auditoria permanecem escondidos (display: none no HTML)
     }
 
 }

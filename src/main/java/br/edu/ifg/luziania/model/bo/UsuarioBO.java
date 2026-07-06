@@ -49,7 +49,7 @@ public class UsuarioBO {
         }
 
         String token = Jwt.issuer("https://inventario.ifg.br")
-                .upn(usuario.getEmail()) //email do usuário logado
+                .upn(usuario.getEmail()) //User principal name email do usuário logado
                 .groups(usuario.getPerfil().name()) // Perfil do usuário, grupo que ele faz parte
                 .claim("id", usuario.getId()) // Recupera a Id do usuário com uma chamada rotulada
                 .expiresIn(3600) // 1 hora em segundos
